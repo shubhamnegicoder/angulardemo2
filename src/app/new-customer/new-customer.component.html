@@ -1,0 +1,247 @@
+
+<div class="row">
+  <div class="col-sm-6 col-xs-12">
+    <h1 class="h3 m-0"> Add Customer</h1>
+    <small class="text-muted breadcrumb">Administration » <a routerLink="/Customer">Customer</a> » Add Customer</small>
+    <br><br>
+  </div>
+  
+</div>
+<div class="boxs">
+    <div class="row">
+      <div class="col-md-12">
+<div class="boxs-body" style="margin-left:30px;margin-right:50px">
+    <form #F1="ngForm" class="form-horizontal" role="form" (ngSubmit)="F1.form.valid && onSubmit()">
+          <p class="text-right">
+                  (<span class="text-red">*</span>) indicates mandatory fields</p>
+                      <div class="col-sm-6">
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Name</label>
+                              <div class="col-sm-8">
+                                  <input type="text" value="" class="form-control" name="name" #name="ngModel" [(ngModel)]="vendor.name" required>
+                              </div>
+                             
+                          <span class="material-input"></span>
+                          <div *ngIf="name.invalid && (name.dirty || name.touched)">
+
+                               <div *ngIf="name.errors.required" style="color:red;float:right;margin-right:50px">
+                                                  Name is required.
+                              </div>
+                          </div>
+                      </div>
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Address 2  </label>
+                              <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="address2" #address2="ngModel" [(ngModel)]="vendor.address2" required>
+                            </div>
+                             
+                            <span class="material-input"></span>
+                            <span *ngIf="address2.invalid && (address2.dirty || address2.touched)">
+          
+                                <span *ngIf="address2.errors.required" style="color:red;margin-right:-9px;float:right">
+                                    Address2 is required.
+                                </span>
+                              </span></div>
+                          <div class="form-group is-empty">
+                            <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Country</label>
+                            <div class="col-sm-8">
+                                <select [(ngModel)]="vendor.countryId" #countryId="ngModel" name="countryId" class="form-control" (change)="selectCountry($event)" required>
+                                    <option value="" selected>Select</option>
+                                    <option *ngFor="let cat of countryList" value="{{cat.id}}">
+                                        {{cat.name}}
+                                    </option>
+                                </select>
+                              
+                            </div>
+                         
+                        <span class="material-input"></span>
+                        <span *ngIf="countryId.invalid && (countryId.dirty || countryId.touched)">
+      
+                            <span *ngIf="countryId.errors.required" style="color:red;margin-right:-9px;float:right">
+                                country is required.
+                            </span>
+                          </span>
+                    </div>
+                      <div class="form-group is-empty">
+                        <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>City</label>
+                        <div class="col-sm-8">
+                            <select [(ngModel)]="vendor.cityId" #cityId="ngModel" name="cityId" class="form-control"  required>
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let cat of cityList" value="{{cat.id}}">
+                                    {{cat.name}}
+                                </option>
+                            </select>
+                          
+                        </div>
+                     
+                    <span class="material-input"></span>
+                    <span *ngIf="cityId.invalid && (cityId.dirty || cityId.touched)">
+  
+                        <span *ngIf="cityId.errors.required" style="color:red;margin-right:-9px;float:right">
+                          city is required.
+                        </span>
+                      </span>
+                </div> 
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label">Fax No</label>
+                              <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="poBox"  [(ngModel)]="vendor.poBox" #poBox="ngModel">
+                            </div>
+                             
+                          <span class="material-input"></span>
+                      
+                        
+                      </div>
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Email</label>
+                              <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="email" #email="ngModel" [(ngModel)]="vendor.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+                            </div>
+                          <span class="material-input"></span>
+                          <span *ngIf="email.invalid && (email.dirty || email.touched)">
+        
+                              <span *ngIf="email.errors.required" style="color:red;float:right;margin-right:-9px;">
+                                Email is required.
+                              </span>
+                            </span>
+                            <span *ngIf="email.errors && email.errors.pattern">
+                                <span *ngIf="email.errors.pattern" style="color:red;float:right;margin-right:-9px;">
+                                  EmailId is invalid
+                              </span>
+                            </span>
+                      </div>
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Payment Mode</label>
+                              <div class="col-sm-8">
+                                  <input type="text" value="" class="form-control" name="gstno" #gstno="ngModel" [(ngModel)]="vendor.gstno" required>
+                              </div>
+                             
+                              <span class="material-input"></span>
+                              <span *ngIf="gstno.invalid && (gstno.dirty || gstno.touched)">
+            
+                                  <span *ngIf="gstno.errors.required" style="color:red;float:right;margin-right:-9px;">
+                                    GST Number is required.
+                                  </span>
+                                </span></div>
+                         
+                          <!-- <div class="form-group is-empty">
+                            <label for="input01" class="col-sm-3 control-label">TIN No.</label>
+                            <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="tinNo" #tinNo="ngModel" [(ngModel)]="vendor.tinNo">
+                            </div>
+                           
+                            <span class="material-input"></span>
+                            <span *ngIf="tinNo.invalid && (tinNo.dirty || tinNo.touched)">
+          
+                                <span *ngIf="tinNo.errors.required" style="color:red;float:right;margin-right:-9px;">
+                                  TIN Number is required.
+                                </span>
+                              </span></div> -->
+                         </div>
+                         <div class="col-sm-6">
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>Address 1</label>
+                              <div class="col-sm-8">
+                                  <input type="text" value="" class="form-control" required [(ngModel)]="vendor.address1" name="address1" #address1="ngModel" required>
+                              </div>
+                            
+                          <span class="material-input"></span>
+                      
+                          <div *ngIf="address1.invalid && (address1.dirty || address1.touched)">
+
+                              <div *ngIf="address1.errors.required" style="color:red;float: right;margin-right:50px">
+                                Address1 is required.
+                              </div>
+                             </div>
+                      </div>
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label">Address 3</label>
+                              <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="address3" #address3="ngModel" [(ngModel)]="vendor.address3" >
+                            </div>
+                            
+                          <span class="material-input"></span></div>
+                     <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>State</label>
+                              <div class="col-sm-8">
+                                  <select [(ngModel)]="vendor.regionId"  #regionId="ngModel" name="regionId" class="form-control" (change)="selectState($event)" required>
+                                      <option value="" selected>Select</option>
+                                      <option *ngFor="let sc of stateList" value="{{sc.id}}">{{sc.name}}</option>
+                                  </select>
+                              </div>
+                            
+                              <span class="material-input"></span>
+                              <span *ngIf="regionId.invalid && (regionId.dirty || regionId.touched)">
+            
+                                  <span *ngIf="regionId.errors.required" style="color:red;margin-right:-9px;float:right">
+                                      State is required.
+                                  </span>
+                                </span></div> 
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label">Phone</label>
+                              <div class="col-sm-8">
+                                <input type="text" value="" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="vendor.phone" >
+                            </div>
+                             
+                          <span class="material-input"></span>
+                         
+                      </div> 
+                          <div class="form-group is-empty">
+                              <label for="input01" class="col-sm-3 control-label">Alternate Email</label>
+                              <div class="col-sm-8">
+                                  <input type="text" value="" class="form-control" name="alternateEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="vendor.alternateEmail" #alternateEmail="ngModel" >
+                              </div>
+                              <span class="material-input"></span>
+                                <span *ngIf="alternateEmail.errors && alternateEmail.errors.pattern">
+                                    <span *ngIf="alternateEmail.errors.pattern" style="color:red;float:right;margin-right:-9px;">
+                                      EmailId is invalid
+                                  </span>
+                                </span>
+                      </div>
+                          <div class="form-group is-empty">
+                                  <label for="input01" class="col-sm-3 control-label"><sup class="text-red">*</sup>PAN No</label>
+                                  <div class="col-sm-8">
+                                    <input type="text" value="" class="form-control" name="panNo" #panNo="ngModel" [(ngModel)]="vendor.panNo" required>
+                                </div>
+                              
+                              <span class="material-input"></span>
+                              <span *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
+        
+                                  <span *ngIf="panNo.errors.required" style="color:red;float:right;margin-right:-9px;">
+                                    Pan Number is required.
+                                  </span>
+                                </span>
+                          </div>
+                          <div class="form-group is-empty">
+                            <label for="input01" class="col-sm-3 control-label">Status</label>
+                            <div class="col-sm-8">
+                              <input type="text" value="" class="form-control" name="contactPerson" #contactPerson="ngModel" [(ngModel)]="vendor.contactPerson" >
+                          </div>
+                        
+                    </div>
+                         </div>
+              <div class="clearfix"></div>
+              <div class="form-group">
+                              <div class="col-md-12 text-center">
+                                  <button type="submit" [disabled]="F1.form.valid?false:true" class="btn btn-success btn-raised">Save</button>
+                                  <button type="button" class="btn btn-raised btn-warning" (click)="backBtnPressed()">Back</button>
+                                 
+                              </div>
+                          </div>
+                      </form>
+        
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            
+              <!-- <ul class="footer" >
+                <li class="pull-left">Copyright &copy; 2018 Limitless Mobility Solutitons Pvt Ltd. All rights reserved.</li>
+                <li class="pull-right">Powered by <a href="http://zoneonedigital.com/" target="_blank">Zone One Digital</a></li>
+            </ul> -->
+
+
+                 <!-- spinner code -->
+
+
+  

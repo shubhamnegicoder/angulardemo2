@@ -1,0 +1,156 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Trn Mismatch</h1>
+      <small class="text-muted breadcrumb">
+        <a routerLink="/trnMisMatch">Reports</a> » Trn Mismatch
+      </small>
+    </div>
+
+    <div class="col-sm-6 col-xs-12 text-right">
+      <button class="btn btn-raised btn-info pull-right " (click)="filterTrigger()" data-toggle="tooltip" title="Click here to filter">
+        Filter
+        <div class="ripple-container"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="boxs">
+  <div class="row">
+      <!-- /Filter Panel-->
+      <div *ngIf="trigger">
+          <div class="boxs-widget filter_block">
+            <form id="filterForm">
+              <div class="col-sm-3">
+                <label>From Location :</label>
+                <select class="form-control" #fromLoc>
+                  <option value="">Select </option>
+                  <option *ngFor="let data of fromLocation" value="{{data.id}}">
+                    {{data.name}}</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <label>To Location:</label>
+                <select class="form-control" #toLoc>
+                  <option value="">Select </option>
+                  <option *ngFor="let data of toLocation" value="{{data.id}}">{{data.name}}</option>
+                </select>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-group">
+                <div class="col-sm-12 text-center">
+                  <button type="submit" class="btn btn-raised btn-danger" data-toggle="tooltip" title="Click here to search" (click)="searchdata(fromLoc.value,toLoc.value)">
+                    Search
+                    <div class="ripple-container"></div>
+                  </button>
+                  <button  class="btn btn-raised btn-default" data-toggle="tooltip" title="Click here to reset" (click)="resetfunction()">Reset</button>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <hr />
+            </form>
+          </div>
+        </div>
+        <!--End/.-->
+        <div class="col-md-12">
+          <div class="boxs-widget"> 
+            <div class="row">
+              <!-- <div class="col-md-6"> <a routerLink="CreatePo" class="btn btn-success btn-raised" >Create PO</a></div> -->
+              <div class="col-md-6 text-right pagestatus" style="width:100%">
+                <small class="text-muted">
+                  Per page
+                  <select (change)="optionpage($event)">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                  </select>
+                  showing
+                  <strong class="text-darkgray">{{pageNo==0?0:(pageNo*pageSize)-(pageSize-1)}}</strong> to
+                  <strong class="text-darkgray">{{pageNo*pageSize>=totalRecords?totalRecords:pageNo*pageSize}}</strong> of
+                  <strong class="text-darkgray">{{totalRecords}}</strong>
+                </small>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="boxs-body">
+            <div class="table-responsive">
+              <table class="table mb-0 table-striped" id="usersList">
+                <thead style="float: left;width:100%">
+                  <tr class=" bg-lightgray">
+                    <th class="text-darkgray" style="width:16%;">TRN Code</th>
+                    <th class="text-darkgray" style="width:18%;">From Location</th>
+                    <th class="text-darkgray" style="width:18%;">To Location</th>
+                    <th class="text-darkgray" style="width:72%;text-align: center" colspan="4">Items</th>
+                    <th class="text-darkgray">Action</th>
+                  </tr>
+                  <tr>
+                    <th colspan="3" style="width:54%;"></th>
+    
+                    <th class="text-darkgray" style="width:13%;">HSN Code</th>
+                    <th class="text-darkgray" style="width:15%;">TO Quantity</th>
+                    <th class="text-darkgray" style="width:15%;">TRN Quantity</th>
+                    <th class="text-darkgray">Diff(Base)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="trnmismatchList.length ===0">
+                  <tr>
+                    <td colspan="8" style="text-align:center">No Record Found....</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr *ngFor="let data of trnmismatchList" style="float: left;width:100%">
+                    <td [attr.rowspan]="data.transferReceiptNoteDetailViewModels.length" style="width:3%;vertical-align: middle">{{data.code}}</td>
+                    <td [attr.rowspan]="data.transferReceiptNoteDetailViewModels.length" style="width:20%;vertical-align: middle">{{data.fromWHName}}</td>
+                    <td [attr.rowspan]="data.transferReceiptNoteDetailViewModels.length" style="width:17%;vertical-align: middle">{{data.toWHName}}</td>
+                    <td style="width:72%">
+                      <!-- <table> -->
+                      <tr *ngFor="let item of data.transferReceiptNoteDetailViewModels">
+                        <td style="width:410px;">{{item.hsnCode}}</td>
+                        <td style="width:30%;">{{item.toQuantity}}</td>
+                        <td style="width:34%;">{{item.quantity}}</td>
+                        <td>{{item.differenceInBase}}</td> 
+                      </tr>
+                      <!-- </table> -->
+                    </td>
+                    <td [attr.rowspan]="data.transferReceiptNoteDetailViewModels.length" style="width:18%;vertical-align: middle">
+                      <a class="fa fa-cog" [routerLink]="['releaseTrnMisMatch',data.trnId]"></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /boxs body -->
+          <!-- boxs footer -->
+          <div class="boxs-footer dvd dvd-top">
+            <div class="row">
+              <div class="col-md-12 text-right" style="width:100% !important">
+                <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+    
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)">
+                      <i class="fa fa-chevron-left"></i>
+                    </a>
+                  </li>
+                  <li *ngFor="let page of pager.pages" style="cursor:pointer" [ngClass]="{active:pager.currentPage === page}">
+                    <a style="cursor:pointer" (click)="setPage(page)">{{page}}</a>
+                  </li>
+                  <li>
+                    <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages"
+                      style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)">
+                      <i class="fa fa-chevron-right"></i>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- /boxs footer -->
+        </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#f3903f" type="ball-triangle-path"></ngx-spinner>

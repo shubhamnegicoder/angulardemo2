@@ -1,0 +1,60 @@
+
+<div  class="authentication loginpage">
+  <div class="wrapper">
+    <div class="header header-filter" style="background-image: url('assets/images/login-bg.jpg'); background-size: cover; background-position: top center;">
+      <div class="col-md-12"><img src="assets/images/logo-white.png" height="32" width="190" class="mt-40 ml-10" /></div>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 text-center">
+            <h3>WELCOME</h3>
+            <p class="subhead">Please login to UVM</p>
+            <div class="card card-signup">
+              <form class="form" [formGroup]="loginForm" (ngSubmit)="formHandler(loginForm)" novalidate>
+                <h3><span class="pull-left ml-20">LOGIN</span> <img class="pull-right mr-20" src="assets/images/barcode.png" height="53" width="62" /></h3>
+                 <br>
+                 <br>
+                <div class="content">
+                  <div class="form-group">
+                    <input type="email" class="form-control underline-input" placeholder="Username/EmailId" formControlName="email">
+                    <div style="color:red" *ngIf="loginForm.controls.email.invalid && (loginForm.controls.email.touched ||loginForm.controls.email.dirty)">
+                      <div *ngIf="loginForm.controls.email.errors.required">Username/EmailId is required</div>
+                      <div *ngIf="loginForm.controls.email.errors.email">Email must be a valid email address</div>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control underline-input" formControlName="password" >
+                    <div style="color:red" *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.touched ||loginForm.controls.password.dirty)">
+                    <div *ngIf="loginForm.controls.password.errors.required">Password is required</div>
+                    </div>
+                  </div>
+                  <div>
+                    <label>
+                      <input type="checkbox" name="optionsCheckboxes"> Remember me
+                    </label>
+                  </div>
+                </div>
+                <div class="footer text-center">
+                  <button type="submit" class="btn btn-info btn-raised">Login</button>
+                </div>
+                <div class="pb-30 small">  <a href="#" class="text-darkgray">Trouble logging in?</a></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer mt-20 pb-20">
+        <div class="container">
+          <div class="col-lg-12 text-center">
+            <div class="copyright text-white mt-20">
+              Copyright &copy; 2018 Limitless Mobility Solutitons Pvt Ltd. All rights reserved.
+              Powered by <a href="http://zoneonedigital.com/" target="_blank">Zone One Digital</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+  </div>
+  

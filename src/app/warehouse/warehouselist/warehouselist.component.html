@@ -1,0 +1,197 @@
+
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Maintain Warehouse</h1>
+      <small class="text-muted breadcrumb">Warehouse » Warehouse</small>
+    </div>
+    <div class="col-sm-6 col-xs-12 text-right">
+      <button class="btn btn-raised btn-info pull-right " (click)="toggle()">
+        Filter
+        <div class="ripple-container"></div>
+      </button>
+    </div>
+  </div>
+
+
+<div class="boxs">
+  <div class="row">
+    <!-- /Filter Panel-->
+    <div *ngIf="show">
+      <div class="boxs-widget filter_block">
+        <form id="filter">
+
+          <div class="col-sm-3">
+            <label>Name:</label>
+            <input type="text" #Name class="form-control" />
+          </div>
+
+          <div class="col-sm-3">
+    
+            <label>State:</label>
+            <select class="form-control" #state (change)="selectdata($event)">
+              <option value=" ">Select </option>
+              <option *ngFor="let data of searchDetail.regions" value="{{data.code}}">{{data.name}}</option>
+            </select>
+          </div>
+      <div class="col-sm-3">
+        <label>City :</label>
+        <select class="form-control" #city placeholder="select Country">
+          <option value=" ">Select</option>
+          <option *ngFor="let data of searchCities" value="{{data.id}}">{{data.name}}</option>
+        </select>
+      </div>
+          <div class="col-sm-3">
+            <label>Status:</label>
+            <select class="form-control" #status placeholder="select status">
+              <option value=" ">Select</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+
+
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <div class="col-sm-12 text-center">
+              <button type="button" class="btn btn-raised btn-danger" (click)="searchDetails(Name.value,state.value,city.value,status.value)" >
+                Search
+              </button>
+              <button type="reset" data-toggle="tooltip" title="Click here to reset" (click)="resetfunction()" class="btn btn-raised btn-default">Reset</button>
+            </div>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+        <hr />
+      </div>
+    </div>
+    <!--End/.-->
+    <div class="col-md-12">
+      <div class="boxs-widget">
+        <div class="row">
+          <div class="col-md-6">
+            <a routerLink="Create" class="btn btn-success btn-raised">Add New</a>
+            <a class="btn btn-warning btn-raised" data-target="#importModal" data-toggle="modal">Import</a>
+          </div>
+          <div class="col-md-6 text-right pagestatus">
+            <small class="text-muted">
+              Per page
+              <select (change)="optionpage($event)">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              showing
+              <strong class="text-darkgray">{{(pageNo*pageSize)-(pageSize-1)}}</strong> to
+              <strong class="text-darkgray">{{pageNo*pageSize>=totalRecords?totalRecords:pageNo*pageSize}}</strong> of
+              <strong class="text-darkgray">{{totalRecords}}</strong>
+              </small>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="boxs-body">
+        <div class="table-responsive">
+          <table class="table mb-0 table-striped" id="usersList">
+            <thead>
+              <tr class=" bg-lightgray">
+                <th class="text-darkgray">Name</th>
+                <th class="text-darkgray">State</th>
+                <th class="text-darkgray">City</th>
+                <th class="text-darkgray">Type</th>
+                <th class="text-darkgray">Status</th>
+                <th class="text-darkgray" style="text-align: center;width:11%">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="listDetail==null">
+              <tr>
+                <td colspan="6" style="text-align:center">No Record Found....</td>
+              </tr>
+            </tbody>
+
+            <tbody *ngIf="listDetail!=null">
+              <tr *ngFor=' let po of listDetail'>
+                <td>{{po.name}}</td>
+                <td>{{po.regionName}}</td>
+                <td>{{po.cityName}}</td>
+                <td>{{po.mainWarehouse==true?"Main WH":"Sub Inv"}}</td>
+                <td>{{po.isActive==1?"Active":"Inactive"}}</td>
+                <td style="text-align: right;">
+                  <a role="button" class="p-5 text-blue" [routerLink]="['maintainStock',po.id]">
+                    <i class="fa fa-cart-plus" aria-hidden="true" style="font-size:20px" title="Maintain Stock"></i>
+                  </a>
+                  <a [routerLink]="['Edit',po.id]" class="p-5 text-blue">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px" title="Click here to Edit"></i>
+                  </a>
+                  <a role="button" class="{{po.isActive == 1?'p-5 text-blush':'p-5 text-green'}}" (click)="changeStatus(po.id)">
+                    <i class="{{po.isActive == 1?'fa fa-window-close-o ':'fa fa-check-square-o'}}" aria-hidden="true" title="Click here to {{po.isActive == 1?'Deactivate':'Activate'}}"
+                      style="font-size:20px"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /boxs body -->
+      <!-- boxs footer -->
+      <div class="boxs-footer dvd dvd-top">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(pager.currentPage - 1)">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li>
+                <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages"
+                  style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)" data-toggle="tooltip" title="Next">
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="importModal" role="dialog" data-dismiss="modal" #closeBtn2>
+        <div class="modal-dialog">
+          <!-- Import Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+              <h4 class="modal-title">Import Warehouse</h4>
+            </div>
+            <div class="modal-body">
+              <div>
+                <label style="color:black; font-weight: bold;">
+                  <span style="color:red;">*</span> Choose Excel File (.xls or .xlsx files only. Name should be unique.): </label>
+
+                <form enctype="multipart/form-data">
+                  <input type="file" class="form-control" #fileInput style="text-align:center;width:100%; background-color:white;height:25%"
+                  />
+                  <br />
+                </form>
+                <label>For downloading the Excel format</label>&nbsp;&nbsp;
+                <a style="font-weight: bold" href="../../../assets/SampleWarehouse.xlsx"
+                  download="SampleWarehouse.xlsx">Click here</a>
+              </div>
+              <div class="modal-footer">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-success btn-raised" (click)="importAsXLSX()">Upload</button>
+                  <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /boxs footer -->
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#f3903f" type="ball-triangle-path"></ngx-spinner>

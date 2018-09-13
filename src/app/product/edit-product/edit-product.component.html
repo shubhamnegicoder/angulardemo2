@@ -1,0 +1,181 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Update Product</h1>
+      <small class="text-muted breadcrumb"><a routerLink="/ProductCatalogue">Product Catelogue</a> » <a routerLink="/ProductCatalogue/Product">Product</a> » Update</small>
+     </div>
+   
+  </div>
+</div>
+<section class="boxs">
+  <div class="boxs-body">
+      <div class="pagecontent" style='overflow-x:hidden'>
+          <p style='margin-left:75%'>( <span style="color:red;">*</span> ) indicates mandatory fields</p>
+            <form style='width:147%;'>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Product Name(Should be unique)
+                  </label>
+                  <input type="text" value="{{itemViewModel1.name}}" class="form-control" #name>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>MRP
+                  </label>
+                  <input type="text" value="{{itemViewModel1.price}}" class="form-control" #price>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Brand &nbsp;
+                    <a class="text-success" data-target="#brandModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Brand"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" (change)='selectBrand($event)' [(ngModel)]='data2.brand' #brand='ngModel' name='brand'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let brand of brandViewModels1' value='{{brand.id}}'>{{brand.name}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    Sub Brand &nbsp;
+                    <a class="text-success" data-target="#subBrandModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Sub Brand"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" [(ngModel)]='data2.subBrand' #subBrand='ngModel' name='subBrand'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let subBrand of subBrandViewModels1' value='{{subBrand.id}}'>{{subBrand.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Category &nbsp;
+                    <a class="text-success" data-target="#categoryModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Category"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" (change)='selectCategory($event)' [(ngModel)]='data2.category' #category='ngModel' name='category'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let category1 of categoryViewModels1' value='{{category1.id}}'>{{category1.name}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    Sub Category &nbsp;
+                    <a class="text-success" data-target="#subCategoryModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Sub Category"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" [(ngModel)]='data2.subCategory' #subCategory='ngModel' name='subCategory'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let subCategory1 of subCategories1' value='{{subCategory1.id}}'>{{subCategory1.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+        
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Department &nbsp;
+                    <a class="text-success" data-target="#departmentModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip"  role="button" title="Add New Department"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" [(ngModel)]='data2.department' #department='ngModel' name='department'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let department1 of departmentViewModels1' value='{{department1.id}}'>{{department1.name}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Company &nbsp;
+                    <a class="text-success" data-target="#companyModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Company"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" [(ngModel)]='data2.company' #company='ngModel' name='company'>
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let company1 of companyViewModels1' value='{{company1.id}}'>{{company1.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Product Type {{productTypeName}}&nbsp;
+                    <a class="text-success" data-target="#prodTypeModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Product Type"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" [(ngModel)]='data2.productType' #productType='ngModel' name='productType'>
+                    <option value=''>Select</option>
+                    <option *ngFor='let productType of productTypeViewModels1' value='{{productType.id}}'>{{productType.name}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    Bar Code
+                  </label>
+                  <input type="text" class="form-control" value="{{itemViewModel1.barCode}}" #barCode>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>HSN Code
+                  </label>
+                  <input type="text" class="form-control" value="{{itemViewModel1.hsnCode}}" #hsnCode>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>
+                    <span style="color: red">*</span>Tax &nbsp;
+                    <a class="text-success" data-target="#taxModal" data-toggle="modal">
+                      <i aria-hidden="true" class="fa fa-plus" data-toggle="tooltip" role="button" title="Add New Tax"></i>
+                    </a>
+                  </label>
+                  <select class="form-control" #tax='ngModel' [(ngModel)]='data2.tax' name="tax">
+                    <option value='' disabled>Select</option>
+                    <option *ngFor='let tax1 of taxViewModels1' value='{{tax1.id}}'>{{tax1.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group col-md-2">
+                  <label>
+                    Status
+                  </label>
+                  <label class="switch" data-toggle="tooltip" title="Status" style="position:absolute;
+            top: 18px;
+            right: 19px;">
+                    <input type="checkbox" #check='ngModel' [(ngModel)]='data1.status' name="check">
+                    <span class="slider round"></span>
+                  </label>
+        
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="clearfix"></div>
+              <div class="form-row">
+                <div class="form-group " >
+                  <button type="button" style='margin-left:29%;margin-right:1%' class="btn btn-raised btn-success" data-toggle="tooltip" title="Click here to save" (click)='update(name.value,price.value,hsnCode.value,barCode.value)'>Save</button>
+                  <a routerLink="/Product">
+                    <button type="button" class="btn btn-raised btn-dark" data-toggle="tooltip" title="Click here to back ">Back</button>
+                  </a>
+                </div>
+              </div>
+            </form> 
+        </div>
+        </div>
+        </section>

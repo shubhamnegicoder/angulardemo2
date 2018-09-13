@@ -1,0 +1,143 @@
+<div id="wrap" class="animsition">
+
+  <!-- HEADER Content -->
+  <div id="header">
+    <header class="clearfix">
+      <!-- Branding -->
+      <div class="branding"> <a class="brand" routerLink="/dashboard"> <span><img src="assets/images/logo.png" /></span> </a> <a role="button"
+          tabindex="0" class="offcanvas-toggle visible-xs-inline"> <i class="fa fa-bars"></i> </a> </div>
+      <!-- Branding end -->
+
+      <!-- Left-side navigation -->
+      <ul class="nav-left pull-left list-unstyled list-inline">
+        <li class="leftmenu-collapse" *ngIf='!toggleOut'> <a role="button" tabindex="0" class="collapse-leftmenu"> <i class="fa fa-outdent" (click)='outdent()'></i>
+          </a> </li>
+          <li class="leftmenu-collapse" *ngIf='toggleOut'> <a role="button" tabindex="0" class="collapse-leftmenu"> <i class="fa fa-indent" (click)='outdent()'></i>
+          </a> </li>
+      </ul>
+      <!-- Left-side navigation end -->
+
+      <!-- Right-side navigation -->
+      <ul class="nav-right pull-right list-inline bg-tr-white">
+        <li class="dropdown nav-profile"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"> <img
+              src="assets/images/profile-photo.jpg" alt="" class="0 size-30x30"> <i class="fa fa-chevron-down ml-20" aria-hidden="true"></i></a>
+          <ul class="dropdown-menu pull-right" role="menu">
+            <li>
+              <div class="user-info">
+                <div class="user-name">{{commonService.getUserProfile().userName}}</div>
+                <div class="user-position online">Available</div>
+              </div>
+            </li>
+            <li> <a routerLink="/profile" role="button" tabindex="0"> <i class="fa fa-user"></i>Profile</a> </li>
+
+            <li class="divider"></li>
+            <li> <a (click)="logout()" role="button" tabindex="0"> <i class="fa fa-sign-out"></i>Logout</a> </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- Right-side navigation end -->
+
+      <ul class="top_navigation">
+        <li *ngFor="let menu of navMenu">
+          <i class="{{menu.cssClass}}" style="color:white"></i>&nbsp;
+          <a routerLink='/{{menu.action}}' role="button" (click)="menuEvent(menu.moduleId
+          );">{{menu.module}}</a>
+        </li>
+       
+      </ul>
+
+      <!-- Top Navigation end -->
+
+    </header>
+    <div class="closenav">Navigation</div>
+  </div>
+  <!--/ HEADER Content  -->
+  <app-sidebar [sidebarMenu]="subnavMenu" [selecetedMainMenu]="selectedMenu"></app-sidebar>
+  <!-- CONTENT -->
+  <section id="content">
+    <div class="page bootstrap-page-tables">
+      <!-- bradcome -->
+     <router-outlet></router-outlet>
+
+    </div>
+     
+    <!--Footer-->
+
+
+    <ul class="footer">
+      <li class="pull-left">Copyright &copy; 2018 Limitless Mobility Solutitons Pvt Ltd. All rights reserved.</li>
+      <li class="pull-right">Powered by <a href="http://zoneonedigital.com/" target="_blank">Zone One Digital</a></li>
+    </ul>
+
+
+
+  </section>
+</div>
+
+
+<!-- Import Modal  -->
+<div class="modal fade" id="importModal" role="dialog" data-dismiss="modal">
+  <div class="modal-dialog">
+    <!-- Import Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Import Product</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label style="color:black; font-weight: bold;">
+            <span style="color:red;">*</span> Choose Excel File (.xls or .xlsx files only. Product Name should be unique.): </label>
+
+          <form enctype="multipart/form-data">
+            <input type="file" class="form-control" #fileInput style="text-align:center;width:100%; background-color:white;height:25%"
+            />
+            <br />
+          </form>
+          <label>For downloading the Excel format</label>&nbsp;&nbsp;
+          <a style="font-weight: bold" href="../../assets/SampleProduct.xls"
+            download="SampleProduct.xls">Click here</a>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success btn-raised" (click)="importAsXLSX()">Upload</button>
+            <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Modal  -->
+<div class="modal fade" id="uploadPopUp" role="dialog" data-dismiss="modal">
+  <div class="modal-dialog">
+    <!-- Import Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Upload Product</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label style="color:black; font-weight: bold;">
+            <span style="color:red;">*</span> Choose Excel File (.xls or .xlsx files only.): </label>
+
+          <form enctype="multipart/form-data">
+            <input type="file" class="form-control" #fileInput style="text-align:center;width:100%; background-color:white;height:25%"
+            />
+            <br />
+          </form>
+          <label>For downloading the Excel format</label>&nbsp;&nbsp;
+          <a style="font-weight: bold" >Click here</a>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success btn-raised">Upload</button>
+            <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

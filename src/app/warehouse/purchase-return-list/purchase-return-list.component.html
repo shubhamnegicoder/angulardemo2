@@ -1,0 +1,181 @@
+
+              <!-- bradcome -->
+              <div class="mb-10">
+                  <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                      <h1 class="h3 m-0">Purchase Return</h1>
+                      <small class="text-muted breadcrumb"><a  routerLink="/Warehouse/Warehouse">Warehouse</a> »Outbound »Purchase Return</small>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 text-right">
+                      <button class="btn btn-raised btn-info pull-right " (click)="toggle()">
+                        Filter
+                        <div class="ripple-container"></div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+    
+                <!-- row -->
+                <!-- /row -->
+                <div class="boxs">
+                  <div class="row">
+                    <!-- /Filter Panel-->
+                    <div *ngIf="show">
+                      <div class="boxs-widget filter_block">
+                        <form id="filter">
+                          <div class="col-sm-3">
+    
+                            <label>State:</label>
+                            <select class="form-control" #state (change)="selectdata($event)">
+                              <option value="">Select </option>
+                              <option *ngFor="let data of searchDetail.regions" value="{{data.code}}">{{data.name}}</option>
+                            </select>
+                          </div>
+    
+                          <div class="col-sm-3">
+                            <label>City:</label>
+                            <select class="form-control" #city (change)="selectdata2($event)">
+                              <option value="">Select </option>
+                              <option *ngFor="let data of searchCities" value="{{data.id}}">{{data.name}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Vendor:</label>
+                            <select class="form-control" #vendor placeholder="select Country">
+                              <option value="">Select</option>
+                              <option *ngFor="let data of searchVendors" value="{{data.id}}">{{data.name}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Warehouse :</label>
+                            <select class="form-control" #warehouse placeholder="select Country">
+                              <option value="">Select</option>
+                              <option *ngFor="let data of searchWarehouses" value="{{data.id}}">{{data.name}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Status:</label>
+                            <select class="form-control" #status placeholder="select Country">
+                              <option value="">Select</option>
+                              <option value="1">Open</option>
+                              <option value="3">Closed</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>PRO No:</label>
+                            <input type="text" #PRO class="form-control" />
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Date:</label>
+                            <input type="date" #date class="form-control" />
+                          </div>
+    
+                          <div class="clearfix"></div>
+                          <div class="form-group">
+                            <div class="col-sm-12 text-center">
+                              <button type="button" (click)="filteroption(state.value,city.value,vendor.value,warehouse.value,status.value,PRO.value,date.value)" class="btn btn-raised btn-danger">
+                                Search
+                                <div class="ripple-container"></div>
+                              </button>
+                              <button  (click)="resetfunction($event)" class="btn btn-raised btn-default">Reset</button>
+                            </div>
+                          </div>
+                        </form>
+                        <div class="clearfix"></div>
+                        <hr />
+                      </div>
+                    </div>
+                    <!--End/.-->
+                    <div class="col-md-12">
+                      <div class="boxs-widget">
+                        <div class="row">
+                          <div class="col-md-6"> <a class="btn btn-success btn-raised" routerLink="Create"> Create</a></div>
+                          <div class="col-md-6 text-right pagestatus">
+                            <small class="text-muted">
+                              Per page
+                              <select (change)="optionpage($event)">
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                              </select>
+                              showing <strong class="text-darkgray">{{(pageNo*pageSize)-(pageSize-1)}}</strong> to <strong class="text-darkgray">{{pageNo*pageSize>=totalRecords?totalRecords:pageNo*pageSize}}</strong> of <strong class="text-darkgray">{{totalRecords}}</strong>
+                            </small>
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                      <div class="boxs-body">
+                        <div class="table-responsive">
+                          <table class="table mb-0 table-striped" id="usersList">
+                            <thead>
+                              <tr class=" bg-lightgray">
+                                <th class="text-darkgray">PRO No</th>
+                                <th class="text-darkgray">Date</th>
+                                <th class="text-darkgray">Vendor</th>
+                                <th class="text-darkgray">Warehouse</th>
+                                <th class="text-darkgray">Status</th>
+                                <th class="text-darkgray" style="text-align: center;width:11%">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody *ngIf="listDetail==null"><tr><td colspan="6" style="text-align:center">No Record Found....</td></tr></tbody>
+    
+                            <tbody *ngIf="listDetail!=null">
+                              <tr *ngFor=' let po of listDetail'>
+                                <td>{{po.code}}</td>
+                                <td>{{po.date |date:'dd MMM, yyyy'}}</td>
+                                <td>{{po.vendorName}}</td>
+                                <td>{{po.warehouseName}}</td>
+                                <td>{{po.status==1?"Open":"Closed"}}</td>
+                                <td style="text-align: right;">
+                                  <a class="p-5 text-blush" [ngClass]="{disabled:po.status==1}" role="button"  (click)="printPurchaseReturnPdf(po.purchaseReturnId)">
+                                    <i class="fa fa-print" aria-hidden="true" style="font-size:20px"></i>
+                                  </a>
+                                  <a [routerLink]="['/ViewPR',po.purchaseReturnId]"  class="p-5 text-blue">
+                                    <i class="fa fa-eye" aria-hidden="true" style="font-size:20px"></i>
+                                  </a>
+                                  <a [routerLink]="['Edit',po.purchaseReturnId]" class="p-5 text-blue" [ngClass]="{disabled:po.status>1}" >
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px"></i>
+                                  </a>
+                                </td>
+                              </tr>
+    
+    
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- /boxs body -->
+                      <!-- boxs footer -->
+                      <div class="boxs-footer dvd dvd-top">
+                        <div class="row">
+                          <div class="col-md-12 text-right">
+                            <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+    
+                              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                <a (click)="setPage(pager.currentPage - 1)"> <i class="fa fa-chevron-left"></i></a>
+                              </li>
+                              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                <a (click)="setPage(page)">{{page}}</a>
+                              </li>
+                              <li>
+                                <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages" style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)"> <i class="fa fa-chevron-right"></i></button>
+                              </li>
+    
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- /boxs footer -->
+                    </div>
+                  </div>
+                </div>
+    
+    
+              
+          
+              <!-- <ngx-spinner
+              bdColor = "rgba(51, 51, 51, 0.8)"
+              size = "medium"
+              color = "#f3903f"
+              type = "ball-triangle-path"
+              ></ngx-spinner> -->

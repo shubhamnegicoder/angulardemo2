@@ -1,0 +1,30 @@
+.textalignn{
+  text-align: center;
+}
+.textalignn{
+  text-align: center;  
+}
+
+.pagination > li > button {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: gray;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: none;
+  pointer-events: none;
+}
+
+.pagination > li > .button:hover {
+  background-color: lightgray;
+  color: #337ab7
+}
+

@@ -1,0 +1,123 @@
+<div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Purchase Order</h1>
+      <small class="text-muted breadcrumb"><a  routerLink="/Warehouse/Warehouse">Warehouse</a> »Inbound » <a  routerLink="/Warehouse/PurchaseOrder">Purchase Order</a> »View Purchase Order</small>
+      <br/><br/>
+    </div>
+   
+  </div>
+  <div class="boxs">
+      <div class="row">
+        <div class="col-md-12">
+  <div class="boxs-body" style="margin-left:30px;margin-right:50px">
+      <form #creatpoform="ngForm">
+          <div class="form-row">
+            <div class="form-group  col-md-8">
+                  <label class="labelS" for="PoDate">PRO Code</label>&nbsp;:&nbsp;{{prodata.code}} 
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">PRO Date</label>&nbsp;:&nbsp;{{prodata.date | date:'dd MMM, yyyy'}} 
+            </div>
+          </div>
+            <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Warehouse</label>&nbsp;:&nbsp;{{prodata.warehouseName}}
+              <!-- <input type="text" disabled value="{{podata.warehouseName}}"  class="form-control" value="" id="warehouse"> -->
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">Quantity</label>&nbsp;:&nbsp;{{prodata.quantity}}
+            <!-- <input type="text" disabled class="form-control" value="{{podata.vendorName}}" id="Vendor"> -->
+          </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Warehouse Address</label>&nbsp;:&nbsp;{{prodata.warehouseAddress1}},{{prodata.warehouseAddress2}}
+                <!-- -->
+              <!-- <input type="text" disabled value="{{podata.warehouseName}}"  class="form-control" value="" id="warehouse"> -->
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">Status</label>&nbsp;:&nbsp;{{prodata.status==1?'Open':prodata.status==3?'Closed':'Cancelled'}}
+      
+            <!-- <input type="text" disabled class="form-control" value="{{podata.vendorName}}" id="Vendor"> -->
+          </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Vendor Name</label>&nbsp;:&nbsp;{{prodata.vendorName}}
+              
+              <!-- <input type="text" disabled class="form-control" value="{{podata.quantity}}" id="wholeqty"> -->
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">Release By</label>&nbsp;:&nbsp;{{releaseBy}}
+            <!-- <input type="text" disabled class="form-control" value="{{podata.status==1?'Open':podata.status==3?'Closed':'Cancelled'}}" id="status"> -->
+           </div>
+          </div>
+          <div class="form-row">
+           
+          <div *ngIf="released" class="form-group col-md-8">
+              <label class="labelS" for="PoDate">Vendor Address</label>&nbsp;:&nbsp;{{prodata.vendorAddress1}},{{prodata.vendorAddress2}}
+           
+            <!-- <input type="text" disabled class="form-control" value="{{podata.quantity}}" id="wholeqty"> -->
+          </div>
+          <div  *ngIf="released" class="form-group col-md-4">
+            <label class="labelSS" for="PoDate">Release On</label>&nbsp;:&nbsp;{{releaseDate|date :'dd MMM, yyyy'}}
+          <!-- <input type="text" disabled class="form-control" value="{{podata.status==1?'Open':podata.status==3?'Closed':'Cancelled'}}" id="status"> -->
+      </div>
+          </div>
+          
+        </form>
+        
+        <div class="container selecteditem" style="margin-top:200px;width: 100%">
+          <h4>Items</h4>
+            <div style=" position: relative;;height: 150px;width: 100%; overflow-y: auto;overflow-x: hidden;">
+            <table class="table-bordered table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th>HSN</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Reason</th>
+                  <th>Amt</th>
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of previtem;let i=index">
+                  <td>{{items.hsnCode}}</td>
+                  <td>{{items.itemName}}</td>
+                  <td>{{items.quantity}}</td>
+                  <td>{{items.mrp}}</td>
+                  <td>{{items.availableQuantity}}</td>
+                  <td>{{items.reason}}</td>
+                  <td id="{{'pop'+i}}">{{((items.mrp)*(items.quantity)*(items.conversion))}}</td>
+                  <!-- <td><a (click)="notremove()"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td> -->
+                </tr>
+                <tr *ngFor="let items of addeditem2 ; let i=index">
+                    <td>{{items.hsnCode}}</td>
+                    <td>{{items.itemName}}</td>
+                    <td>{{items.quantity}}</td>
+                    <td> {{items.mrp}}</td>
+                    <td>{{items.availableQuantity}}</td>
+                    <td>{{items.reason}}</td>
+                    <td id="{{'pon'+i}}">{{((items.mrp)*(items.quantity)*(items.conversion))|number:'1.0-2'|nocommanumber}}</td>
+                    <!-- <td><a (click)="removeitem(items.purchaseOrderDetailId)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td> -->
+                  </tr>
+              </tbody>
+            </table>
+            </div>
+            <div>
+              <label class="labelSS" style="width:10% !important;margin-left: 80%;" for="PoDate">Total Amount</label>&nbsp;:&nbsp;{{prodata.netAmount|number:'1.0-2'|nocommanumber}}(₹​)
+          </div>
+          <div class="col-sm-10 form-group text-center">  
+          <!-- <button class="btn btn-raised btn-success" *ngIf="!released" (click)="submitPO()" data-toggle="tooltip" title="create po">Save</button> -->
+            <button class="btn btn-raised  btn-dark " (click)="back()">Back</button>
+            </div>
+        </div> 
+     
+          
+  </div>
+                        </div>
+                    </div>
+  </div>

@@ -1,0 +1,146 @@
+
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+	margin-bottom: -1px;
+}
+
+/********************************************************************/
+/*** PANEL PRIMARY ***/
+.with-nav-tabs.panel-primary .nav-tabs > li > a,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+    color: #fff;
+}
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color:black;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs> li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs> li.active > a:focus {
+	color: #428bca;
+	background-color:black;
+	border-color: #428bca;
+	border-bottom-color: transparent;
+}
+
+
+/********************************************************************/
+/*** PANEL SUCCESS ***/
+
+fieldset 
+{
+    border: 1px solid #ddd !important;
+    margin: 0;
+    xmin-width: 0;
+    padding: 10px;       
+    position: relative;
+    border-radius:4px;
+    background-color:white;
+    padding-left:0px!important;
+}	
+
+    legend
+    {
+        font-size:14px;
+        font-weight:bold;
+        margin-bottom: 0px; 
+        width: 35%; 
+        border: 1px solid #ddd;
+        border-radius: 4px; 
+        padding: 5px 5px 5px 10px; 
+        background-color:#f5f5f5;
+    }
+
+    .switch {
+        position: relative;
+       display: inline-block;
+        height: 1.3em;
+        width: 3.2em;
+        border-radius: 1em;
+      }
+      
+      .switch input {display:none;}
+      
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      input:checked + .slider {
+        background-color: #95cf22;
+      }
+      
+      input:focus + .slider {
+        box-shadow: 0 0 1px #95cf22;
+      }
+      
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+      
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 1em;
+      }
+      
+      .slider.round:before {
+ 
+          height: 1em;
+          width: 1em;
+          border-radius: 1em;
+      }
+      .gr{
+        margin: 0,0,0,0;
+      }
+
+      .panel-heading .accordion-toggle:after {
+        /* symbol for "opening" panels */
+        font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+        content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+        float: right;        /* adjust as needed */
+        color: grey;         /* adjust as needed */
+    }
+    .panel-heading .accordion-toggle.collapsed:after {
+        /* symbol for "collapsed" panels */
+        content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+    }
+
+    
+
+
+
+
+
+/** Switch
+ -------------------------------------*/

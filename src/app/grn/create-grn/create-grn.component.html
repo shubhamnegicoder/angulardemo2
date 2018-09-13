@@ -1,0 +1,195 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Grn</h1>
+      <small class="text-muted breadcrumb">
+        <a routerLink="/Warehouse">Warehouse</a> »
+        <a routerLink="/Grn">Grn</a> » Create Grn
+      </small>
+    </div>
+  </div>
+</div>
+<section class="boxs">
+  <div class="boxs-body">
+    <div class="pagecontent" style='overflow-x:hidden'>
+        <p style="color:black;font-size:14px;margin-left: 79%;">(<span style="color:red;">*</span>) indicates mandatory fields</p>
+        <form style='width: 133%;'>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>Warehouse
+              </label>
+              <select class="form-control" name="warehouse1"  #warehouse1="ngModel" [(ngModel)]="data1.warehouse1" required (change)="selectWarehouse($event)">
+                <option value="" selected disabled>Select </option>
+                <option *ngFor="let data of warehouseList" value="{{data.id}}">{{data.name}}</option>
+              </select>
+              <div *ngIf="warehouse1.invalid &&(warehouse1.dirty || warehouse1.touched)">
+                <div *ngIf="warehouse1.errors.required"  style="color:red;font-size:12px;">
+                  Warehouse is required
+                </div>
+              </div>
+              <div *ngIf="warehouse1.invalid &&((warehouse1.prinstine || warehouse1.untouched) && (vendor1.dirty || vendor1.touched))">
+                  <div *ngIf="warehouse1.errors.required" style="color:red;font-size:12px;">
+                    Please select warehouse first 
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>Vendor
+              </label>
+              <select class="form-control" name="vendor1" #vendor1="ngModel" [(ngModel)]="data1.vendor1" required (change)="getOpenPo()" required>
+                <option value="" selected>Select </option>
+                <option *ngFor="let data of vendorList" value="{{data.id}}">{{data.name}}</option>
+              </select>
+              <div *ngIf="vendor1.invalid &&(vendor1.dirty || vendor1.touched)">
+                <div *ngIf="vendor1.errors.required" style="color:red;font-size:12px;">
+                  Vendor is required
+                </div>
+              </div>
+              <div *ngIf="vendor1.invalid &&((vendor1.prinstine || vendor1.untouched) && (po1.dirty || po1.touched))">
+    
+                  <div *ngIf="vendor1.errors.required" style="color:red;font-size:12px;">
+                    Please select vendor first 
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>PO
+              </label>
+              <select class="form-control" name="po1" [(ngModel)]="data1.po1" (change)="getDivOpen()" id="poId" #po1="ngModel" required>
+                <option value="" selected>Select </option>
+                <option *ngFor="let data of poList" value="{{data.purchaseOrderId}}">{{data.code}}</option>
+              </select>
+              <div *ngIf="po1.invalid &&(po1.dirty || po1.touched)">
+                <div *ngIf="po1.errors.required" style="color:red;font-size:12px;">
+                  Po is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="clearfix"></div>
+          <div *ngIf="poSelected">
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label >
+                  GRN Date
+                </label>
+                <input type="text" class="form-control" value="{{today |date:'dd MMM, yyyy'}}">
+              </div> 
+              <div class="form-group col-md-3">
+                <label >
+                  <span style="color: red">*</span>Invoice No
+                </label>
+                <input type="text" id="invoice_no" class="form-control" [(ngModel)]="data1.invoiceNo1" name="invoiceNo1" #invoiceNo1="ngModel" required>
+                <div *ngIf="invoiceNo1.invalid &&(invoiceNo1.dirty || invoiceNo1.touched)">
+                  <div *ngIf="invoiceNo1.errors.required" style="color:red;font-size:12px;">
+                    Invoice No is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-3">
+                <label >
+                  <span style="color: red">*</span>Invoice Date
+                </label>
+                <input type="date" class="form-control" id="invoice_date" [(ngModel)]="data1.invoiceDate1" name="invoiceDate1" #invoiceDate1="ngModel" max="{{maxDate}}">
+              </div>
+            </div>
+            <div class="clearfix"></div>
+    
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label >
+                  Total Qty
+                </label>
+                <input type="hidden" value="{{qty}}" #quantity>
+                <input type="text" class="form-control" value="{{quantity.value}}" #poquantity id="total_qty">
+              </div>
+              <div class="form-group col-md-3">
+                <label >
+                  <input type="hidden" value="{{totalAmount}}" #totalAmount1> Total Amount
+                </label>
+                <input type="text" class="form-control" value="{{totalAmount1.value |number:'1.0-2'|nocommanumber}}">
+              </div>
+            </div>
+           
+            <div class="clearfix"></div>
+            <div class="boxs-body">
+              <div>
+                <h4 class="card-title" >
+                  Items
+                </h4>
+              </div>
+              <div class="table-responsive" style="width:880px;background-color:white;height:145px;overflow-x:hidden;overflow-y:auto">
+    
+                <table class="table-bordered table" id="myTable">
+    
+                  <thead>
+                    <tr class=" bg-lightgray">
+                      <th class="text-darkgray">HSN</th>
+                      <th class="text-darkgray">Name</th>
+                      <th class="text-darkgray">MRP</th>
+                      <th class="text-darkgray">PO Qty</th>
+                      <th class="text-darkgray">Inward Qty</th>
+                      <th class="text-darkgray">Base</th>
+                      <th class="text-darkgray">Amount (₹​)</th>
+                      <th class="text-darkgray">Expiry Date</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="list.length===0">
+                    <tr>
+                      <td colspan="8" style="text-align:center">No Record Found....</td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr *ngFor="let list of list;let i=index">
+                      <td>{{list.hsnCode}}</td>
+                      <td>
+                        <input type="hidden" id="{{'itemId_'+i}}" value="{{list.itemId}}">{{list.itemName}}</td>
+                      <input type="hidden" value="{{list.conversion}}" #conversion>
+                      <td>{{list.mrp |number:'1.0-2'|nocommanumber}}</td>
+                      <td style="text-align:center">
+                        <input type="text" value="{{list.quantity}}" style="width:50px;" id="{{'po_qty'+i}}" disabled>
+                      </td>
+                      <input type="hidden" value="{{list.basePrice}}">
+    
+                      <td>
+                        <input type="number" id="{{'inwrdqty_'+i}}" style="width:50px;" (keyup)="keyUpQty($event,list.conversion,list.basePrice)" (keydown)="keyDownQty($event,amount.value)"
+                          value="" width="10px" (change)="change($event)" min=0 oninput="validity.valid||(value='');" >
+                      </td>
+                      <td>{{list.basePrice|number:'1.0-2'|nocommanumber}}</td>
+                      <td>
+                        <input type="text" style="width:80px;" value="{{0|number:'1.0-2'|nocommanumber}}" id="{{'amt'+i}}" disabled #amount/>
+                      </td>
+                      <td>
+                        <input type="text"  style="width:100px;" id="{{'expiryDate'+i}}" value="{{list.itemExpiryDate | date: 'yyyy-MM-dd'}}" disabled >
+                      </td>
+                    </tr>
+                  </tbody> 
+                </table>
+              </div>
+            </div>
+            <!-- /boxs body -->
+          </div>
+          <div class="clearfix"></div> 
+          <div class="form-row">
+            <div class="form-group " style="margin-left:350px">
+              <button type="button" class="btn btn-raised btn-success" data-toggle="tooltip" title="Click here to save" *ngIf="poSelected" style='left:4%' (click)="submitData()">Save</button>
+              
+                <button type="button" id='backOfCreateGrn' class="btn btn-raised btn-dark" data-toggle="tooltip" title="Click here to cancel" style='margin-left:5%' (click)='back()'>Back</button>
+            
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+</section>
+
+<ngx-spinner
+bdColor = "rgba(51, 51, 51, 0.8)"
+size = "medium"
+color = "#f3903f"
+type = "ball-triangle-path"
+></ngx-spinner> 

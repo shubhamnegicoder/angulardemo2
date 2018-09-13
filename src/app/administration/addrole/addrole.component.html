@@ -1,0 +1,335 @@
+
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Create Role</h1>
+      <small class="text-muted breadcrumb">Create Role</small> </div>
+   
+  </div>
+</div>
+<div class="boxs">
+  <div class="row"> 
+    <!-- /Filter Panel-->
+    
+    <!--End/.-->
+    <div class="col-md-12">
+      <div class="boxs-widget">
+        
+      </div>
+      <div class="boxs-body" style="height:380px">
+        <div class="table-responsive">
+          <form #Roledetails=ngForm class="form-inline"  (ngSubmit)="submitform(Roledetails)" style="margin:10%;">
+            <fieldset style="margin-left:-14%;margin-top:-106px;width: 128%;height: 120px;">
+      
+              <legend>Role Details</legend>
+              <div class="basicdetails " style="height:127px;">
+      
+                <div class="form-row">
+                  <div class="form-group col-sm-7">
+                    <label for="name">
+                      <span style="color: red">*</span>Name(unique):</label>&nbsp;
+                    <input type="text" id="name" class="form-control"  name="name"  [(ngModel)]="rolename" #name="ngModel" required>
+                    <span *ngIf="name.invalid && (name.dirty ||name.touched)">
+                        <span *ngIf="name.errors.required" style="color:red;display:block;position:absolute;">
+                          rolename is mandatory
+                        </span>
+                    </span>
+                  </div> &nbsp; &nbsp; &nbsp;
+                
+                  <div class="form-group col-sm-4">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Is Active: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" name="isActive" [(ngModel)]="isActive" #status>
+                        <span class="slider round"></span>
+                    </label>
+                  </div>&nbsp;                                        
+                </div>
+              </div>
+            </fieldset>
+            <fieldset style="margin-left:-14%;width:128%;min-height:710px;">
+      
+              <legend>Role Permission</legend>
+              
+              <div class="basicdetails" style="height:127px;"> 
+              
+              
+              
+                <div class="panel-group" id="accordion">
+                <ng-container *ngFor="let items of modulelist">
+                 
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#{{items.moduleId}}">
+                         {{items.module}}    
+                        </a>
+                        <span>
+                            &nbsp; &nbsp; <label for="checkall" class="switch" data-toggle="tooltip" style="color: black">CheckAll:</label>
+                             <label class="switch" data-toggle="tooltip" title="Check All" style="position: relative; left:3%;top:15%;">
+                                 <input type="checkbox" id ="checkall" name="checkall" #checkall (click)="checkallevent($event,items.moduleId)">
+                                 <span class="slider round"></span>
+                             </label>
+                         </span> &nbsp;&nbsp; 
+                         
+                      </h4>
+                     
+                      
+                    </div>
+                    <div id="{{items.moduleId}}" class="panel-collapse collapse in">
+                      <div class="panel-body" *ngFor="let data of items.permission">
+                     
+                    
+                      <div class="form-row col-md-12"> 
+                        <div class="form-group col-sm-2" style="margin-left: -3%;">
+                         <label>{{data.subModule}} :</label> 
+                        </div>
+                        <div class="form-group col-sm-2" *ngIf="data.isViewSelected==1">
+                          <label for="view" class="switch" data-toggle="tooltip">View: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                          <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                          left: 83px;
+                          top: 4px;">
+                              <input type="checkbox" id ="view" name="view" #view [disabled]="(data.isViewSelected==1)?false:true" [checked]="data.viewcheck">
+                              <span class="slider round"></span>
+                          </label>
+                        </div>
+                      
+                        <div class="form-group col-sm-2" *ngIf="data.isAddSelected==1">
+                          <label for="Add" class="switch" data-toggle="tooltip">Add: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                          <label class="switch" data-toggle="tooltip" title="Add" style="position: absolute;
+                          left: 83px;
+                          top: 4px;">
+                              <input type="checkbox" id ="Add" #add  name="add" [disabled]="(data.isAddSelected==1)?false:true" [checked]="data.addcheck">
+                              <span class="slider round"></span>
+                          </label>
+                        </div>
+                        <div class="form-group col-sm-2" *ngIf="data.isEditSelected==1">
+                          <label for="Edit" class="switch" data-toggle="tooltip">Edit: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                          <label class="switch" data-toggle="tooltip" title="Edit" style="position: absolute;
+                          left: 83px;
+                          top: 4px;">
+                              <input type="checkbox" id ="Edit" name="Edit" #edit [disabled]="(data.isEditSelected==1)?false:true" [checked]="data.editcheck">
+                              <span class="slider round"></span>
+                          </label>
+                        </div> 
+                        <div class="form-group col-sm-2" *ngIf="data.isDeleteSelected==1">
+                          <label for="Delete" class="switch" data-toggle="tooltip">Delete: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                          <label class="switch" data-toggle="tooltip" title="Delete" style="position: absolute;
+                          left: 83px;
+                          top: 4px;">
+                              <input type="checkbox" id ="Delete" name="delete" #delete [disabled]="(data.isDeleteSelected==1)?false:true" [checked]="data.deletecheck">
+                              <span class="slider round"></span>
+                          </label>
+                        </div> 
+                        <div class="form-group col-sm-2" *ngIf="data.isImportSelected==1">
+                          <label for="Import" class="switch" data-toggle="tooltip">Import: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                          <label class="switch" data-toggle="tooltip" title="Import" style="position: absolute;
+                          left: 83px;
+                          top: 4px;">
+                              <input type="checkbox" id ="Import" name="import" #import [disabled]="(data.isImportSelected==1)?false:true" [checked]="data.importcheck"> 
+                              <span class="slider round"></span>
+                          </label>
+                        </div>  
+                        
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+                  
+
+              
+              
+              
+              
+              
+              
+              
+                <div class="form-row">
+                   <div class="form-group">
+                    
+                    <!-- <select id="module" (change)="modalevent($event,select)" #select>
+                      <option value="" disabled>Select Module </option>
+                      <option *ngFor="let items of modulelist" [value]="items.moduleId" [attr.name]="items.module" #selector>{{items.module}}</option>
+                    </select>  -->
+                    </div>
+                    <!-- <div class="form-group col-sm-3" style="width:27%;">
+                    <label for="submodule">SubModule:</label>&nbsp;&nbsp;  
+                    <select id="submodule" (change)="submoduleevent($event,select.value)" #selectsubmodule>
+                      <option value="">Select SubModule </option>
+                      <option *ngFor="let items of submodulelist" [value]="items.permissionId">{{items.subModule}}</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-sm-3" style="width: 23%;">
+                    <label>Add Permission:</label>&nbsp;&nbsp;  
+                    <a role="button" class="text-success" (click)=addpermissionlist()><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="form-group col-sm-3">
+                    <label>Show Permission List :</label>&nbsp;&nbsp;  
+                    <a data-toggle="modal" data-target="#submodules" class="text-success"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
+                   
+                   </div>
+                </div>
+                <div class="form-row col-md-12" *ngFor="let items of permission"> 
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">View: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #view [disabled]="(items.isViewSelected==1)?false:true">
+                        <span class="slider round"></span>
+                    </label>
+                  </div>
+                
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Add: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #add [disabled]="(items.isAddSelected==1)?false:true">
+                        <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Edit: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #edit [disabled]="(items.isEditSelected==1)?false:true">
+                        <span class="slider round"></span>
+                    </label>
+                  </div> 
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Delete: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #delete [disabled]="(items.isDeleteSelected==1)?false:true">
+                        <span class="slider round"></span>
+                    </label>
+                  </div> 
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Import: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #import [disabled]="(items.isImportSelected==1)?false:true">
+                        <span class="slider round"></span>
+                    </label>
+                  </div>                                       
+                </div> -->
+              </div>
+              
+             
+            </div>
+            </fieldset>
+    <!-- <legend>User Role</legend> -->
+              <!-- <div class="basicdetails " style="height:127px;">
+      
+                <div class="form-row">
+                  <div class="form-group col-sm-4">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Sales: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #check>
+                        <span class="slider round"></span>
+                    </label>
+                  </div>
+                
+                  <div class="form-group col-sm-4">
+                    <label for="isActive" class="switch" data-toggle="tooltip">Accounts: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #check>
+                        <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <label for="isActive" class="switch" data-toggle="tooltip">XYZ: </label>&nbsp; &nbsp; &nbsp;&nbsp;
+                    <label class="switch" data-toggle="tooltip" title="Is Active" style="position: absolute;
+                    left: 83px;
+                    top: 4px;">
+                        <input type="checkbox" id ="isActive" #check>
+                        <span class="slider round"></span>
+                    </label>
+                  </div>                                       
+                </div>
+              </div> -->
+              <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-success btn-raised" (click)="submitrole()">Save</button>
+                <button class="btn btn-raised btn-warning" (click)="back()">Cancel</button>
+            
+             </div>
+          
+          </form>
+        </div>
+      </div>
+      <!-- /boxs body --> 
+      
+      <!-- boxs footer -->
+      
+      <!-- /boxs footer --> 
+
+      <div class="modal fade" id="submodules" role="dialog" data-dismiss="modal" #closeBtn4>
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 147%">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Permissions List</h4>
+                </div>
+                <div class="modal-body">
+                  <div  class="container selecteditem">
+                    
+                    <table class="table-bordered table"  style="width: 71%;">
+                      <thead>
+                        <tr>
+                          <th>Module</th>
+                          <th>SubModule</th>
+                          <th>Add</th>
+                          <th>View</th>
+                          <th>Edit</th>
+                          <th>Delete</th>
+                          <th>Import</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="!finalpermission ||finalpermission.length==0"><tr><td colspan="8" style="text-align:center">No Record Found....</td></tr></tbody>
+        
+                      <tbody *ngIf="finalpermission">
+                        <tr *ngFor="let items of finalpermission">
+                         <td>{{items.parentmodule}}</td>
+                         <td>{{items.subModule}}</td>
+                         <td>{{items.isAddSelected}}</td>
+                         <td>{{items.isViewSelected}}</td>
+                         <td>{{items.isEditSelected}}</td>
+                         <td>{{items.isDeleteSelected}}</td>
+                         <td>{{items.isImportSelected}}</td>
+                          <td><a (click)="removepermission(items.permissionId)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="col-md-12">
+                      <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+                  
+              </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+  </div>
+  
+</div>
+<router-outlet></router-outlet>

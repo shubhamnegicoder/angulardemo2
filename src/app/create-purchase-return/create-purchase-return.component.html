@@ -1,0 +1,247 @@
+<div class="row">
+  <div class="col-sm-6 col-xs-12">
+    <h1 class="h3 m-0"> Add Purchase Return</h1>
+    <small class="text-muted breadcrumb">Administration »
+      <a routerLink="/CustomerLocation">Customer</a> » Add Customer Location</small>
+    <br>
+    <br>
+  </div>
+  
+</div>
+<div class="boxs">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="boxs-body" style="margin-left:30px;min-height:600px;margin-right:50px">
+        <form #creatpoform="ngForm">
+            <p class="text-right">
+                (<span class="text-red">*</span>) indicates mandatory fields</p>
+          <div class="form-row">
+            <div class="form-group  col-md-3">
+                  <label for="PoDate">PRO Date</label>
+                  <input type="text" disabled class="form-control" value="{{time | date: 'dd MMM, yyyy'}}" id="PoDate">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="city"><span style="color: red">*</span>City</label>
+              <select class="form-control" id="city"  [(ngModel)]="data.cityId" #cityId="ngModel" required  (change)="cityselector($event)" name="cityId" >
+                <option value="" disabled selected>Select City</option>
+                <option *ngFor="let data of city" value="{{data.id}}">{{data.name}}</option>
+              </select>
+              <span *ngIf="whId.invalid  && cityId.invalid && ((vendorId.touched)&&!(cityId.touched)) || cityId.invalid &&((whId.touched)&&!(cityId.touched)) || vendorId.invalid  && cityId.invalid && ((vendorId.touched)&&!(cityId.touched))">
+                <span *ngIf="cityId.errors.required" style="color:red; position:absolute;
+                top: 66px;">
+                 first city is required.
+                </span>
+            </span>
+            <span *ngIf="cityId.invalid && (cityId.dirty || cityId.touched)">
+            
+              <span *ngIf="cityId.errors.required" style="color:red; position:absolute;
+              top: 66px;">
+                city  is required.
+              </span>
+            </span>
+              
+            </div>
+            <div class="form-group col-md-3">
+              <label for="Warehouse"><span style="color: red">*</span>Warehouse</label>
+              <select  [(ngModel)]="data.whId"  name="whId"  id="whId"  #whId="ngModel" required  class="form-control">
+                <option value="" disabled selected>Select Warehouse</option>
+                <option *ngFor="let data of warehouse" value="{{data.id}}">{{data.name}}</option>
+              </select>
+              <span *ngIf="vendorId.invalid && (vendorId.dirty || vendorId.touched) && whId.invalid && !(cityId.invalid)">
+      
+                <span *ngIf="whId.errors.required" style="color:red; position:absolute;
+                top: 66px;">
+                Warehouse  is also required.
+                </span>
+              </span>
+            
+            <span *ngIf="whId.invalid && (whId.dirty || whId.touched)">
+      
+              <span *ngIf="whId.errors.required" style="color:red; position:absolute;
+              top: 66px;">
+              Warehouse  is required.
+              </span>
+            </span>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="Vendor"><span style="color: red">*</span>Vendor</label>
+              <select  [(ngModel)]="data.vendorId"  id="vendorId"  #vendorId="ngModel" required  class="form-control" id="vendorId" placeholder="Select" (change)="vendordetail($event)" name="vendorId">
+                <option value="" disabled selected>Select Vendor</option>
+                <option *ngFor="let data of vendor" value="{{data.id}}">{{data.name}}</option>
+              </select>
+              <span *ngIf="vendorId.invalid && (vendorId.dirty || vendorId.touched)">
+      
+                <span *ngIf="vendorId.errors.required" style="color:red; position:absolute;
+                top: 66px;">
+                  vendor  is required.
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="VendorAddress">Vendor Address</label>
+              <input type="text" class="form-control" value={{vendorAdd}} id="VendorAddress">
+            </div>
+            <div class="col-sm-6 form-group text-center">   
+            <button type="button" class="btn btn-success btn btn-raised" data-toggle="modal" data-target="#myModal" (click)="reqfield(cityId.value,whId.value,vendorId.value)">Add Product</button>
+            <button type="button" class="btn btn-raised btn-dark" (click)="back()">Back</button>
+            </div>
+          </div>
+        </form>
+        <div *ngIf="show1" class="container selecteditem" style="margin-top:215px ;width: 100%">
+            <h4>Items</h4>
+            <div style=" position: relative;;height: 200px;width: 97%; overflow-y: auto;overflow-x: hidden">
+            <table class="table-bordered table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th>HSN</th>
+                  <th>Name</th>
+                  <th>MRP</th>
+                  <th>Qty</th>
+                  <th>Reson</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of addeditem">
+                  <td #finalname>{{items.hsnCode}}</td>
+                  <td #finalname>{{items.name}}</td>
+                  <td  #finalprice>{{items.price}}</td>
+                  <td #finalqty><input type="text" style="width:40px;" name="{{items.quantity}}" [(ngModel)]="items.quantity"></td>
+                  <td>{{items.reason}}</td>
+                  <!-- <td #finalamount>{{((items.basePrice)*(items.quantity)*(items.conversion))|number}}</td> -->
+                  <td><a (click)="removeitem(items.id)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <div class="col-sm-10 form-group text-center"> 
+            <button class="btn btn-raised btn-success" (click)="submitPO()" data-toggle="tooltip" title="create po">Create PRO</button>
+            <button class="btn btn-raised" style="background-color: #f3903f" (click)="back()">Cancel</button>
+        </div> 
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="ismodal" id="myModal" class="modal fade " style=" position: fixed;
+ top: -4;
+ right: 0;
+ bottom: 0;
+ left: -7%;
+ width: 1300px;
+" role="dialog">
+    <div class="modal-dialog modal-lg" style=" border-radius: 10px">
+  
+      <!-- Modal content-->
+      <div class="modal-content" style="width: 1100px">
+        <div class="modal-header" style="background-color: #f3903f;border-top-right-radius:10px;border-top-left-radius: 10px">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="    margin-top: -13px;
+          margin-bottom: 12px;">Add Product</h4>
+        </div>
+        <div class="modal-body" style="width: 100% ;min-height: 150px;">
+          <form (ngSubmit)="prosearchlist(name.value,whId.value,vendorId.value,cityId.value )">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Name</label>
+                    <input #name type="text" class="form-control"  id={{searchresultid}} (keyup)="auto($event)" value="{{searchresult}}">
+                    <div *ngIf="searchvalue" class="autosearch" style="background-color:whitesmoke;position:absolute;z-index: 100;">
+                    <ng-container  *ngFor="let result of filterdresult"  >
+                      <label role="button" *ngIf="searchvalue"  (click)="searchevent($event,whId.value,vendorId.value,cityId.value)" attr.id="{{result.id}}">{{result.name}}</label>
+                      <br/>
+                    </ng-container>
+                  </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-raised  btn-success" (click)="toggle3()">Search</button>
+                    <button type="reset" class="btn btn-raised btn-dark" >Reset</button>
+                  </div>
+                </div>
+          </form>
+          <div *ngIf="show3" class="container selecteditem" style="margin-left: -18px; margin-top:100px;position:relative; height: 300px;
+          overflow-y: auto;width:55% 
+          ">
+            <h4>Searched Result</h4>
+            
+            <table class="table-bordered table"  style="width:100%;">
+              <thead>
+                <tr>
+                   <th><input type="checkbox" [(checked)]="abbs" name="heading" (click)="checkbox($event)"/></th>
+                    
+                  <!-- <th>#</th> -->
+                  <th>HSN</th>
+                  <th>name</th>
+                  <th>Stock Type</th>
+                  <th>Stock Qty</th>
+                  <th>Qty</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="nameresponse.length==0"><tr><td colspan="8" style="text-align:center">No Record Found....</td></tr></tbody>
+
+              <tbody *ngIf="nameresponse.length!=0">
+                <tr *ngFor="let searchitems of nameresponse; let i=index; ">
+                  <td><input type="checkbox" [(checked)]="checkvalue" (click)="singlecheck($event,searchitems.id,'search',stype.value)"/></td>
+                  <td>{{searchitems.hsnCode}}</td>
+                  <td>{{searchitems.name}}</td>
+                  <td><select #stype (change)="changeselect($event,searchitems.id)">
+                    <option value=" ">Select</option>
+                    <option *ngFor="let data of selectarray[i]" value="{{data}}">{{data}}</option>
+                  </select></td>
+                  <td id="{{'t'+searchitems.id}}">0</td>
+                  <td><input type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="searchitems.quantity" [(ngModel)]="searchitems.quantity" (keyup)="qtychange($event,searchitems.stockQ)" ></td>
+        
+                  <!-- <td><button class="btn-raised" style="background-color: #95cf22" #checkitem value="{{searchitems.id}}" (click)="singlecheck($event)">Add</button></td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="show3">
+          <button class="btn btn-raised btn-success" style="    position: fixed;
+          left: 585px;
+          top: 250px;"  (click)="goselect($event)">>></button>
+          </div>
+
+          <div *ngIf="showselected" class="container selecteditem" style=" position: absolute;
+          top: 128px;
+          left: 650px; height: 300px;
+          overflow-y: auto;
+          ">
+            <h4>Selected Items</h4>
+            
+            <table class="table-bordered table"  style="width:37%;">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Qty</th>
+                  <th>Reason</th>
+                  <th>#</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let searchitems of selectedfinallist">
+                 
+                  <td>{{searchitems.name}}</td>
+                  <td><input type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="searchitems.quantity" [(ngModel)]="searchitems.quantity" (keyup)="qtychange($event,searchitems.stockQ)" ></td> 
+                  <td>{{searchitems.reason}}</td>
+                  <td><a (click)="removeitem2(searchitems.id)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-raised btn-success"(click)="bynamelist($event)">submit</button>
+          <button type="button" class="btn btn-raised" style="background-color: #f3903f" data-dismiss="modal"(click)="closename()">Close</button>
+        </div>
+      </div>
+  
+    </div>
+ </div>
+

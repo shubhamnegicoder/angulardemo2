@@ -1,0 +1,124 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Release Trn Mismatch</h1>
+      <small class="text-muted breadcrumb">
+        <a routerLink="/trnMisMatch">Reports</a> »
+        <a routerLink="/trnMisMatch">Trn MisMatch</a> » Release</small>
+    </div>
+  </div>
+</div>
+<section class="boxs">
+  <div class="boxs-body">
+    <div class="pagecontent" style='overflow-x:hidden'>
+        <!-- <h4 class="card-title" style="color: green;padding:1%; margin-top:8px;margin-left:-2% ">Maintain TRN Mismatch</h4> -->
+        <form style='margin-left: 2%;width: 132%;'>
+          <div class="form-row" style='margin-left:-2%'>
+            <div class="form-group col-md-3">
+              <label for="warehouse">
+                <span style="color: red">*</span>TRN Code
+              </label>
+              <input type="text" value="{{oneTrnMismatch.code}}" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="vendor">
+                <span style="color: red">*</span>TRN Date
+              </label>
+              <input type="text" value="{{oneTrnMismatch.date|date:'dd MMM, yyyy'}}" class="form-control" disabled>
+    
+            </div>
+            <div class="form-group col-md-3">
+              <label for="PO">
+                <span style="color: red">*</span>Transfer Code
+              </label>
+              <input type="text" value="{{oneTrnMismatch.transferOrderCode}}" class="form-control" disabled>
+    
+            </div>
+          </div>
+          <!--  -->
+          <div class="clearfix"></div>
+          <!-- <div *ngIf="poSelected"> -->
+          <div class="form-row" style='margin-left:-2%'>
+            <div class="form-group col-md-3">
+              <label for="warehouse">
+                From Warehouse
+              </label>
+              <input type="text" class="form-control" value="{{oneTrnMismatch.fromWHName}}" disabled>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="vendor">
+                <span style="color: red">*</span>TO Warehouse
+              </label>
+              <input type="text" class="form-control" value="{{oneTrnMismatch.toWHName}}" disabled>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="clearfix"></div>
+          <div class="boxs-body"  style='margin-left:-3%'>
+            <div>
+              <h4 class="card-title" style="color:green;padding:1%;margin-left:7px">
+               Items
+              </h4>
+            </div>
+            <div class="table-responsive" style="width:74%;background-color:white">
+    
+              <table class="table mb-0 table-striped" style="margin-left:2%" id="myTable">
+    
+                <thead>
+                  <tr class=" bg-lightgray">
+                    <th class="text-darkgray">HSN</th>
+                    <th class="text-darkgray">Name</th>
+                    <th class="text-darkgray">TO Quantity</th>
+                    <th class="text-darkgray">TRN Qty</th>
+                    <th class="text-darkgray">Exp. Date</th>
+                    <th class="text-darkgray">Reason</th>
+                    <th class="text-darkgray" style="text-align:center">Action</th>
+                    <th class="text-darkgray" style="text-align:center">Remarks</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="oneTrnMismatch.length==0">
+                  <tr>
+                    <td colspan="8" style="text-align:center">No Record Found....</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr *ngFor="let data of ArrayOfOne;let i = index;">
+                    <td>{{data.hsnCode}}</td>
+                    <td>{{data.itemName}}</td>
+                    <td>{{data.toQuantity}}</td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.expiryDate | date:'dd MMM, yyyy'}}</td>
+                    <td>{{data.reason}}</td>
+                    <td>
+                      <select class="form-control" id="{{'action'+i}}" (change)="changeSelector($event)" [(ngModel)]="data.action" #action name="action">
+                        <!-- <option selected disabled>Select</option> -->
+                        <option value="Dispose">Dispose</option>
+                        <option value="Back To From Warehouse">Back To From Warehouse</option>
+                        <option value="Back To Warehouse">Back To Warehouse</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="textarea" class="form-control" [(ngModel)]="data.reason1" #reason1 name="reason1">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /boxs body -->
+          <!-- </div> -->
+          <div class="clearfix"></div>
+          <div class="form-row">
+            <div class="form-group " style="margin-left:32%; margin-top:25px">
+              <button type="submit" class="btn btn-raised btn-success" data-toggle="tooltip" title="Click here to release" style='left:-3%' (click)="release(ArrayOfOne)">Release</button>
+              
+                <button type="button" class="btn btn-raised btn-dark" data-toggle="tooltip" title="Click here to back " (click)='back()'>Back</button>
+            
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+</section>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#f3903f" type="ball-triangle-path"></ngx-spinner>

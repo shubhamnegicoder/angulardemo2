@@ -1,0 +1,103 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Role</h1>
+      <small class="text-muted breadcrumb">Role</small> </div>
+    <div class="col-sm-6 col-xs-12 text-right">
+      <button class="btn btn-raised btn-info pull-right filter_trigger" (click)="toggleShow();">Filter
+      <div class="ripple-container"></div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="boxs">
+  <div class="row"> 
+    <!-- /Filter Panel-->
+    <div class="boxs-widget filter_block" style=""  *ngIf="show">
+      <div class="col-sm-3">
+        <div class="form-group is-empty">Name<input type="text" class="form-control" placeholder="Name" #name><span class="material-input"></span></div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="form-group">
+        <div class="col-sm-12 text-center">
+          <button  class="btn btn-raised btn-danger" (click)="filtersearch(name.value)">Search
+          <div class="ripple-container"></div>
+          </button>
+          <button  class="btn btn-raised btn-default" (click)="resetfunction()">Reset</button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <hr>
+    </div>
+    <!--End/.-->
+    <div class="col-md-12">
+      <div class="boxs-widget">
+        <div class="row">
+          <div class="col-md-6"> <a class="btn btn-success btn-raised" routerLink='Create'>Add New</a>  </div>
+          <div class="col-md-6 text-right pagestatus"> <small class="text-muted">Per page
+            <select>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+             
+            </select>
+            showing <strong class="text-darkgray">01</strong> to <strong class="text-darkgray">10</strong> of <strong class="text-darkgray">20</strong></small> </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="boxs-body">
+        <div class="table-responsive">
+          <table class="table mb-0 table-striped" id="usersList">
+            <thead>
+              <tr class=" bg-lightgray">
+                <th class="text-darkgray textalignn">Role Id</th>
+                <th class="text-darkgray textalignn">RoleName</th>
+                <th class="text-darkgray textalignn">OperatorName</th>
+                <th class="text-darkgray textalignn">Status</th>
+                <th  class="text-darkgray textalignn" style="width:10%;text-align:center">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="roleList">
+              <tr *ngFor="let role of roleList; let i=index">
+                  <td class="textalignn">{{role.roleId}}</td>
+                  <td class="textalignn">{{role.roleName}}</td>
+                  <td class="textalignn">{{role.operatorName}}</td>
+                  <td class="textalignn">{{role.type}}</td>
+                <td style='width:10%'><a href="#" class="p-5 text-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="p-5 text-blush"><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="p-5 text-green "><i class="fa fa-upload" aria-hidden="true"></i></a></td>
+              </tr>
+           
+            </tbody>
+            <tbody *ngIf="roleList.length==0" style="text-align: center;">
+                
+              <tr class="textalignn">No Records Found</tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /boxs body --> 
+      
+      <!-- boxs footer -->
+      <div class="boxs-footer dvd dvd-top">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+ 
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(pager.currentPage - 1)"> <i class="fa fa-chevron-left"></i></a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li>
+                <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages" style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)"> <i class="fa fa-chevron-right"></i></button>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /boxs footer --> 
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

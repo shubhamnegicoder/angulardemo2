@@ -1,0 +1,7 @@
+{
+    "base_url": "http://103.12.132.77:5559/Identity/",
+    "operator_base_url": "http://103.12.132.77:5559/Operator/",
+    "ims_url" : "http://103.12.132.77:9006/",
+    "payment_url":"http://139.59.7.72:9000/iVendGateway/",
+    "printBase_url" : "https://cors-anywhere.herokuapp.com/http://103.12.132.77:9006/"
+}

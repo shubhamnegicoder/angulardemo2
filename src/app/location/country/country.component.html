@@ -1,0 +1,272 @@
+<!-- bradcome -->
+<div class="row" style="z-index:16">
+  <div class="col-sm-6 col-xs-12">
+    <h1 class="h3 m-0">Maintain Country</h1>
+    <small class="text-muted breadcrumb">Location » Country</small>
+  </div>
+  <div class="col-sm-6 col-xs-12 text-right">
+    <button class="btn btn-raised btn-info pull-right " (click)="toggle()" data-toggle="tooltip" title="Click here to filter">
+      Filter
+      <div class="ripple-container"></div>
+    </button>
+  </div>
+</div>
+
+<!-- row -->
+<!-- /row -->
+<div class="boxs">
+  <div class="row">
+    <!-- /Filter Panel-->
+    <div *ngIf="show">
+      <div class="boxs-widget filter_block">
+        <form id="filterForm">
+          <div class="col-sm-3">
+            <label>Name:</label>
+            <input type="text" class="form-control" placeholder="Enter Country Name" #name>
+          </div>
+          <div class="col-sm-3">
+            <label>Status:</label>
+            <select class="form-control" #status>
+              <option value="">Select </option>
+              <option value="0">Inactive</option>
+              <option value="1">Active</option>
+            </select>
+          </div>
+
+
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <div class="col-sm-12 text-center">
+              <button type="submit" class="btn btn-raised btn-danger" (click)="filteroption(status.value,name.value)" data-toggle="tooltip"
+                title="Click here to search">
+                Search
+                <div class="ripple-container"></div>
+              </button>
+              <button class="btn btn-raised btn-default" data-toggle="tooltip" title="Click here to reset" (click)="resetfunction()">Reset</button>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <hr />
+        </form>
+      </div>
+    </div>
+    <!--End/.-->
+    <div class="col-md-12">
+      <div class="boxs-widget">
+        <div class="row">
+          <div class="col-md-6">
+            <a class="btn btn-success btn-raised text-warning" data-toggle="modal" data-target="#countryModal" title="">Add New</a>
+            <a class="btn btn-warning btn-raised" data-target="#importModal" data-toggle="modal">Import</a>
+          </div>
+          <div class="col-md-6 text-right pagestatus">
+            <small class="text-muted">
+              Per page
+              <select (change)="optionpage($event)">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              showing
+              <strong class="text-darkgray">{{(pageNo*pageSize)-(pageSize-1)}}</strong> to
+              <strong class="text-darkgray">{{pageNo*pageSize
+                <totalRecords?pageNo*pageSize:totalRecords}}</strong> of
+                  <strong class="text-darkgray">{{totalRecords}}</strong>
+            </small>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="boxs-body">
+        <div class="table-responsive">
+          <table class="table mb-0 table-striped" id="usersList">
+            <thead>
+              <tr class=" bg-lightgray">
+                <th class="text-darkgray">Name</th>
+                <th class="text-darkgray">Status</th>
+                <th class="text-darkgray" style="text-align: center;width:9%">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=' let data of listDetail'>
+                <td>{{data.name}}</td>
+                <td>{{data.isActive == 1?"Active":"Inactive"}}</td>
+                <td width="150px" style="text-align: right">
+                  <a role="button" class="p-5 text-blue" data-toggle="modal" (click)="editClicked(data.id)" data-target="#Edit_Modal">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" title="Click here to Edit" style="font-size:20px"></i>
+                  </a>
+                  <a role="button" class="{{data.isActive == 1?'p-5 text-blush':'p-5 text-green'}}" (click)="changeStatus(data.id)">
+                    <i class="{{data.isActive == 1?'fa fa-window-close-o ':'fa fa-check-square-o'}}" aria-hidden="true" title="Click here to {{data.isActive == 1?'Deactivate':'Activate'}}"
+                      style="font-size:20px"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /boxs body -->
+      <!-- boxs footer -->
+      <div class="boxs-footer dvd dvd-top">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+              <!--<li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a (click)="setPage(1)">First</a>
+                      </li>-->
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(pager.currentPage - 1)" data-toggle="tooltip" title="Previous">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li>
+                <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages"
+                  style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)" data-toggle="tooltip" title="Next">
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /boxs footer -->
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer-->
+<!-- Modal-->
+<div class="modal fade" id="countryModal" role="dialog" data-dismiss="modal" #closeBtn>
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Country</h4>
+      </div>
+      <div class="modal-body" style="padding:0px 24px 100px 24px">
+        <form #F1="ngForm">
+          <div class="form-group col-sm-6">
+            <label>Code:</label>
+            <input type="text" value="" class="form-control" placeholder="Enter code" [(ngModel)]="dataForCountryCreation.code" #stateCode="ngModel"
+              name="stateCode" required>
+            <div *ngIf="stateCode.invalid && (stateCode.dirty || stateCode.touched)">
+              <div *ngIf="stateCode.errors.required" style="color:red">
+                Code is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-sm-6">
+            <label>Name:</label>
+            <input type="text" value="" class="form-control" placeholder="Enter Name" [(ngModel)]="dataForCountryCreation.name" #stateName="ngModel"
+              name="stateName" required>
+            <div *ngIf="stateName.invalid && (stateName.dirty || stateName.touched)">
+              <div *ngIf="stateName.errors.required" style="color:red">
+                Name is required
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+
+
+        <div class="col-md-12">
+          <button type="button" class="btn btn-success btn-raised" (click)="createCountry(stateCode.value,stateName.value)">Save</button>
+          <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="Edit_Modal" role="dialog" data-dismiss="modal" #closeBtn1>
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Country</h4>
+      </div>
+      <div class="modal-body" style="padding:0px 24px 100px 24px">
+        <div class="form-group col-sm-6">
+          <label>Code:</label>
+          <input type="text" value="" class="form-control" name="code" #code="ngModel" [(ngModel)]="editList.code" placeholder="Enter code">
+        </div>
+        <div class="form-group col-sm-6">
+          <label>Name:</label>
+          <input type="text" value="" class="form-control" placeholder="Enter Name" #name="ngModel" [(ngModel)]="editList.name">
+        </div>
+      </div>
+      <div class="modal-footer">
+
+
+        <div class="col-md-12">
+          <button type="button" class="btn btn-success btn-raised" (click)="editCountry()">Save</button>
+          <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+
+
+
+<!--</div>-->
+
+
+<!-- Import Modal  -->
+<div class="modal fade" id="importModal" role="dialog" data-dismiss="modal" #closeBtn2>
+  <div class="modal-dialog">
+
+    <!-- Import Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Import Country</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label style="color:black; font-weight: bold;">
+            <span style="color:red;">*</span> Choose Excel File (.xls or .xlsx files only. Name should be unique.): </label>
+
+          <form enctype="multipart/form-data">
+            <input type="file" class="form-control" #fileInput style="text-align:center;width:100%; background-color:white;height:25%"
+            />
+            <br />
+          </form>
+          <label>For downloading the Excel format</label>&nbsp;&nbsp;
+          <a style="font-weight: bold" href="../../../assets/SampleCountry.xlsx"
+            download="SampleCountry.xlsx">Click here</a>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success btn-raised" (click)="importAsXLSX()">Upload</button>
+            <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- spinner code -->
+<ngx-spinner
+   bdColor = "rgba(51, 51, 51, 0.8)"
+   size = "medium"
+   color = "#f3903f"
+   type = "ball-triangle-path"
+   ></ngx-spinner>

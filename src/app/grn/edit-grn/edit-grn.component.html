@@ -1,0 +1,149 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Grn</h1>
+      <small class="text-muted breadcrumb">
+        <a routerLink="/Warehouse">Warehouse</a> »
+        <a routerLink="/Grn">Grn</a> » Update Grn
+      </small>
+    </div>
+  </div>
+</div>
+
+<section class="boxs">
+  <div class="boxs-body"> 
+    <div class="pagecontent" style='overflow-x:hidden'>
+        <p style="color:black;font-size:14px;margin-left: 79%;">(<span style="color:red;">*</span>) indicates mandatory fields</p>
+        <form style='margin-left:-1%;margin-right:-3%;width:136%'>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>Warehouse
+              </label>
+              <input type="text" value="{{listToEdit.warehouseName}}" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>Vendor
+              </label>
+              <input type="text" value="{{listToEdit.vendorName}}" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-3">
+              <label >
+                <span style="color: red">*</span>PO
+              </label>
+              <input type="text" value="{{listToEdit.poCode}}" class="form-control" disabled>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group col-md-3">
+            <label >
+              <span style="color: red">*</span>Invoice No
+            </label>
+            <input type="text" class="form-control" value="{{listToEdit.invoiceNo}}" disabled>
+          </div>
+          <div class="form-group col-md-3">
+            <label >
+              <span style="color: red">*</span>Invoice Date
+            </label>
+            <input type="text" class="form-control" value="{{listToEdit.invoiceDate | date:'dd MMM, yyyy'}}" disabled>
+         
+        </div>
+      
+          <div class="form-group col-md-3">
+            <label >
+              Total Qty
+            </label>
+            <input type="hidden" value="{{quantity}}" #quantity1>
+            <input type="text" class="form-control" value="{{quantity1.value}}" #poquantity disabled>
+          </div>
+          <div class="clearfix"></div>
+    
+          <div class="form-row">
+          <div class="form-group col-md-3">
+            <label>
+              <input type="hidden" value="{{amount1}}" #totalAmount1> Total Amount
+            </label>
+            <input type="text" class="form-control" value="{{totalAmount1.value |number:'1.0-2'|nocommanumber}}" #amount disabled>
+          </div>
+          <div class="form-group col-md-3" *ngIf="!released">
+            <label>
+              Status
+            </label>
+            <input type="text" class="form-control" *ngIf="listToEdit.status === '1'" value="Open" disabled>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <button type="button" class="btn btn-raised btn-info" style='left:28%' data-toggle="modal" title="Click here" data-target="#myModal"
+        *ngIf="!released">Add Item</button>
+        <button type="button" class="btn btn-raised btn-success" data-toggle="tooltip" title="Click here to release" *ngIf="!released" style='margin-left:29%'
+          (click)="release(listToEdit.gdnId)">Release</button>
+        <div class="clearfix"></div>
+        <div class="boxs-body">
+          <div>
+            <h4 class="card-title" style='margin-left:17px'>
+              Items
+            </h4>
+          </div>
+          <div class="table-responsive" style="width:74%;background-color:white;height:147px;position: relative; overflow-y: auto;overflow-x: hidden;">
+            <table class="table-bordered table" id="myTable" style='margin-left:2%'>
+              <thead>
+                <tr class=" bg-lightgray">
+                  <th class="text-darkgray">HSN</th>
+                  <th class="text-darkgray">Name</th>
+                  <th class="text-darkgray">MRP</th>
+                  <th class="text-darkgray">PO Qty</th>
+                  <th class="text-darkgray">Inward Qty</th>
+                  <th class="text-darkgray">Base</th>
+                  <th class="text-darkgray">Amount (₹​)</th>
+                  <th class="text-darkgray">Expiry Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let list of listToEdit1;let i=index">
+                  <td>{{list.hsnCode}}</td>
+                  <td>
+                    <input type="hidden" id="{{'itemId_'+i}}" value="{{list.itemId}}">{{list.itemName}}</td>
+                  <input type="hidden" value="{{list.conversion}}" #conversion>
+                  <td>{{list.price | number:'0.2'}}</td>
+                  <td style="text-align:center">
+                    <input type="text" value="{{list.poQuantity}}" style="width:50px;" id="{{'po_qty'+i}}" disabled>
+                  </td>
+                  <input type="hidden" value="{{list.basePrice}}" #base>
+                  <td>
+                    <input type="number" id="{{'inwrdqty_'+i}}" style="width:50px;" (keyup)="keyUpQty($event,list.conversion,list.basePrice)"
+                      name="{{'quantity'+i}}" [(ngModel)]="list.quantity" (change)="change($event)" value="{{list.quantity}}"
+                      width="10px" min=0 oninput="validity.valid||(value='');">
+                    <td>{{list.basePrice|number:'1.0-2'|nocommanumber}}</td>
+                    <td>
+                      <input type="text" style="width:80px;" value="{{list.netAmount |number:'1.0-2'|nocommanumber}}" id="{{'amt'+i}}" disabled #amount/>
+                    </td>
+                    <td>
+                      <input type="date" style="width:130px;" name="{{'itemExpiryDate'+i}}" [ngModel] ="list.itemExpiryDate | date: 'yyyy-MM-dd'" (ngModelChange)="list.itemExpiryDate = $event" #itemExpiryDate="ngModel"  min="{{minDate}}">
+                    </td>
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+          <!-- /boxs body -->
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-row">
+          <div class="form-group " style="margin-left:28%;margin-top: 15px">
+            <button type="button" class="btn btn-raised btn-success" data-toggle="tooltip" title="Click here to save" style='margin-left:4%' (click)="submitData(listToEdit)">SAVE</button>
+         
+              <button type="button" style='left:1%' class="btn btn-raised btn-dark" data-toggle="tooltip" title="Click here to cancel" (click)='back()'>BACK</button>
+          
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<ngx-spinner
+bdColor = "rgba(51, 51, 51, 0.8)"
+size = "medium"
+color = "#f3903f"
+type = "ball-triangle-path"
+></ngx-spinner> 

@@ -1,0 +1,22 @@
+.selectorclass
+{
+    width:35%;
+    text-align: center;
+    justify-content: center;
+    
+}
+
+.binId
+{
+    margin-top: 1%;
+    
+}
+
+
+
+.customLabel{
+    font-size: 12px;
+    line-height: 1.42857;
+    color: #AAAAAA;
+    font-weight: 800;
+}

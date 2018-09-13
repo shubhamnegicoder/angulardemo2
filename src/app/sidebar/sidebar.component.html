@@ -1,0 +1,35 @@
+<div id="controls">
+  <aside id="leftmenu">
+    <div id="leftmenu-wrap">
+      <div class="panel-group slim-scroll" role="tablist">
+        <div class="panel panel-default">
+          <div id="leftmenuNav" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body"> 
+              
+              <!--  NAVIGATION Content -->
+              <div class="head mt-10"><i class="fa fa-map-o" aria-hidden="true"></i> <span>{{selectedMainMenu}}</span></div>
+              <ul class="left_menu pb-20">
+                <li *ngFor="let menu of sidebarMenu" [ngClass]="menu.subModule==selectedModule?'active':''" style="text-decoration: none">
+                  <div *ngIf="menu.children==null">
+                  <a routerLink="{{menu.action}}" role="button"> {{menu.subModule}}</a>
+                   </div>
+                   <div *ngIf="menu.children!=null">
+                     <a role="button" click="focusMe(menu.subModule)">{{menu.subModule}}</a>
+                      <ul class="subMenu">
+                         <li *ngFor="let child of menu.children">
+                            <a routerLink="{{child.action}}" role="button">{{child.subModule}}</a>
+                         </li>
+                      </ul>
+                   </div>
+                </li>
+                
+                
+              </ul>
+              <!--/ NAVIGATION Content --> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>

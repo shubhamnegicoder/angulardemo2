@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Purchase Order</h1>
+      <small class="text-muted breadcrumb"><a  routerLink="/Warehouse/Warehouse">Warehouse</a> »Inbound » <a  routerLink="/Warehouse/PurchaseOrder">Purchase Order</a> »View Purchase Order</small>
+      <br/><br/>
+    </div>
+   
+  </div>
+  <div class="boxs">
+      <div class="row">
+        <div class="col-md-12">
+  <div class="boxs-body" style="margin-left:30px;margin-right:50px">
+      <form #creatpoform="ngForm">
+          <div class="form-row">
+            <div class="form-group  col-md-8">
+                  <label class="labelS" for="PoDate">PO Code</label>&nbsp;:&nbsp;{{podata.code}} 
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">PO Date</label>&nbsp;:&nbsp;{{podata.date | date:'dd MMM, yyyy'}} 
+            </div>
+          </div>
+            <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Warehouse</label>&nbsp;:&nbsp;{{podata.warehouseName}}
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">PO Expiry Date</label>&nbsp;:&nbsp;{{poexpiryDate | date:'dd MMM, yyyy'}}
+              
+              <!-- <input type="text" disabled value="{{podata.warehouseName}}"  class="form-control" value="" id="warehouse"> -->
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="form-group col-md-8">
+                  <label class="labelS" for="PoDate">Warehouse Address</label>&nbsp;:&nbsp;{{podata.warehouseAddress1}},{{podata.warehouseAddress2}}
+              </div>
+              <div class="form-group col-md-4">
+                 <label class="labelSS" for="PoDate">Quantity</label>&nbsp;:&nbsp;{{podata.quantity}}
+              </div>
+            </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Vendor Name</label>&nbsp;:&nbsp;{{podata.vendorName}}
+              <!-- <input type="text" disabled class="form-control" value="{{podata.vendorName}}" id="Vendor"> -->
+            </div>
+            <div class="form-group col-md-4">
+                <label class="labelSS" for="PoDate">Status</label>&nbsp;:&nbsp;{{podata.status==1?'Open':podata.status==3?'Closed':'Cancelled'}}
+              <!-- <input type="text" disabled class="form-control" value="{{podata.quantity}}" id="wholeqty"> -->
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+                <label class="labelS" for="PoDate">Vendor Address</label>&nbsp;:&nbsp;{{podata.vendorAddress1}},{{podata.vendorAddress2}}
+              <!-- <input type="text" disabled class="form-control" value="{{podata.status==1?'Open':podata.status==3?'Closed':'Cancelled'}}" id="status"> -->
+          </div>
+          <div *ngIf="cancelled" class="form-group col-md-4">
+              <label class="labelSS" for="PoDate">Cancelled By</label>&nbsp;:&nbsp;{{podata.cancelledBy}}
+            <!-- <input type="text" disabled class="form-control" value="{{podata.quantity}}" id="wholeqty"> -->
+          </div>
+          </div>
+          <div class="form-row">
+              <div  *ngIf="cancelled" class="form-group col-md-8">
+                  <label class="labelS" for="PoDate">Cancelled On</label>&nbsp;:&nbsp;{{podata.cancelledOn|date :'dd MMM, yyyy'}}
+                <!-- <input type="text" disabled class="form-control" value="{{podata.status==1?'Open':podata.status==3?'Closed':'Cancelled'}}" id="status"> -->
+            </div>
+            
+            </div>
+        </form>
+        <div class="container selecteditem" style="margin-top:250px;width: 100%">
+            <h4>Items</h4>
+            <div style=" position: relative;;height: 200px; width:100%; overflow-y: auto;overflow-x: hidden">
+            <table class="table-bordered table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th>HSN</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>MRP</th>
+                  <th>Base</th>
+                  <th>Unit Price</th>
+                  <th>Margin</th>
+                  <th>Tax</th>
+                  <th>Landing</th>
+                  <th>Exp-Date</th>
+                  <th>Amt &nbsp;(₹)</th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of previtem;let i=index">
+                  <td #finalname>{{items.hsnCode}}</td>
+                  <td #finalname  id="{{items.id}}">{{items.itemName}}</td>
+                  <td  #finalprice> {{items.quantity}}</td>
+                  <td #finalbaseprice>{{items.mrp|number:'1.0-2'|nocommanumber}}</td>
+                  <td #finalbaseprice>{{items.basePrice|number:'1.0-2'|nocommanumber}}</td>
+                  <td #finalbaseprice>{{items.unitPrice|number:'1.0-2'|nocommanumber}}</td>
+                  <td #finalstock>{{items.margin|number:'1.0-2'|nocommanumber}}</td>
+                  <td #finaluom>{{items.taxPercentage}}</td>
+                  <td #finalconv>{{items.landingPrice}}</td>
+                  <td>{{items.itemExpiryDate|date:'dd/MM/yyyy'}}</td>
+                  <td #finalamount id="{{'pop'+i}}">{{((items.basePrice)*(items.quantity)*(items.conversion))|number:'1.0-2'|nocommanumber}}</td>
+                </tr>
+                <tr *ngFor="let items of addeditem2 ; let i=index">
+                    <td #finalname>{{items.hsnCode}}</td>
+                    <td #finalname  id="{{items.id}}">{{items.itemName}}</td>
+                    <td #finalprice>{{items.quantity}}</td>
+                    <td #finalbaseprice>{{items.mrp|number:'1.0-2'|nocommanumber}}</td>
+                    <td #finalbaseprice>{{items.basePrice|number:'1.0-2'|nocommanumber}}</td>
+                    <td #finalbaseprice>{{items.unitPrice|number:'1.0-2'|nocommanumber}}</td>
+                    <td #finalstock>{{items.margin|number:'1.0-2'|nocommanumber}}</td>
+                    <td #finaluom>{{items.taxPercentage}}</td>
+                    <td #finalconv>{{items.landingPrice}}</td>
+                    <td>{{items.itemExpiryDate|date:'dd/MM/yyyy'}} </td>
+                    <td  id="{{'pon'+i}}">{{((items.basePrice)*(items.quantity)*(items.conversion))|number:'1.0-2'|nocommanumber}}</td>
+                   
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+              <label class="labelSS" style="width:12% !important;margin-left: 80%;" for="PoDate">Total Amount (₹​)</label>&nbsp;:&nbsp;{{podata.netAmount|number:'1.0-2'|nocommanumber}}
+          </div>
+          <div class="col-sm-10 form-group text-center"> 
+            <button class="btn btn-raised btn-dark" (click)="back()">Back</button>
+          </div>
+        </div>
+     
+          
+  </div>
+                        </div>
+                    </div>
+  </div>

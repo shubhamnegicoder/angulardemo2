@@ -1,0 +1,234 @@
+<div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Purchase Return</h1>
+      <small class="text-muted breadcrumb"><a  routerLink="/Warehouse/Warehouse">Warehouse</a> »Outbound » <a  routerLink="/Warehouse/PurchaseReturn">Purchase Return</a> »Edit Purchase Return</small>
+    <br/><br/>
+    </div>
+  </div>
+  <div class="boxs">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="boxs-body" style="margin-left:30px;min-height:600px;margin-right:50px">
+              <form>
+                  <div class="form-row">
+                    <div class="form-group  col-md-4">
+                          <label for="PoDate">Code</label>
+                          <input type="text" disabled value="{{prodata.code}}" class="form-control" value="" id="code">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="poDate">PRO Date</label>
+                      <input type="text" disabled value="{{prodata.date |date: 'dd MMM, yyyy'}}" class="form-control" value="" id="poDate">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="warehouse">warehouse</label>
+                      <input type="text" disabled value="{{prodata.warehouseName}}"  class="form-control" value="" id="warehouse">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="vendor">Vendor</label>
+                      <input type="text" disabled class="form-control" value="{{prodata.vendorName}}" id="Vendor">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="amt">Amount</label>
+                      <input type="text" disabled class="form-control" value="{{prodata.netAmount|nocommanumber}}"id="wholeamt">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="qty">QTY</label>
+                      <input type="text" disabled class="form-control" value="{{prodata.quantity}}" id="wholeqty">
+                    </div>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="status">Status</label>
+                      <input type="text" disabled class="form-control" value="{{prodata.status==1?'Open':'Closed'}}" id="status">
+                    </div>
+                    <div *ngIf="released" class="form-group col-md-4">
+                      <label>
+                        Released By
+                      </label>
+                      <input type="text" class="form-control" value="{{releaseBy}}" disabled>
+                    </div>
+                    <div *ngIf="released" class="form-group col-md-4">
+                      <label>
+                        Released On
+                      </label>
+                      <input type="text" class="form-control" value="{{releaseDate | date: 'dd MMM, yyyy'}}" disabled>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-sm-10 form-group text-center">   
+                      <button type="button" *ngIf="!released" class="btn btn-success btn btn-raised" data-toggle="modal" data-target="#myModal" (click)="modalopen()">Add By Name</button>
+                      <button class="btn btn-raised btn-success"  (click)="release()">Release PRO</button>
+                      <button type="button" class="btn btn-raised btn-dark" (click)="back()">Back</button>
+                    </div>
+                  </div>
+                </form>
+                <div class="container selecteditem" style="margin-top:300px; width: 100%">
+                  <h4>Items</h4>
+                    <div style=" position: relative;;height: 160px;width: 97%; overflow-y: auto;overflow-x: hidden">
+                    <table class="table-bordered table" style="width:100%;">
+                      <thead>
+                        <tr>
+                          <th>HSN</th>
+                          <th>Name</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                          <th>Stock</th>
+                          <th>Reason</th>
+                          <th>Amt</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let items of previtem;let i=index">
+                          <td>{{items.hsnCode}}</td>
+                          <td>{{items.itemName}}</td>
+                          <td><input id="{{'poc'+i}}" [disabled]="released ?true:false" type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="items.quantity" [(ngModel)]="items.quantity" (change)="finalchange($event,items.availableQuantity,'qty')" (keyup)="updateValue($event,items.availableQuantity,'qty')" /></td>
+                          <td><input id="{{'price'+i}}" [disabled]="released ?true:false" type="number" min="1" oninput="validity.valid||(value='');" step=".01" style="width:40px;" [(ngModel)]="items.mrp" (keyup)="updateValue($event,items.availableQuantity,'p')"  (change)="finalchange($event,items.availableQuantity,'p')"/></td>
+                          <td>{{items.availableQuantity}}</td>
+                          <td>{{items.reason}}</td>
+                          <td id="{{'pop'+i}}">{{((items.mrp)*(items.quantity)*(items.conversion))}}</td>
+                          <td><a (click)="notremove()"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+                        </tr>
+                        <tr *ngFor="let items of addeditem2 ; let i=index">
+                            <td>{{items.hsnCode}}</td>
+                            <td>{{items.itemName}}</td>
+                            <td><input id="{{'ponc'+i}}" [disabled]="released ?true:false" type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="items.quantity" [(ngModel)]="items.quantity" (change)="finalchange($event,items.availableQuantity,'qty')" (keyup)="updateValue($event,items.availableQuantity,'qty')"/></td>
+                            <td><input id="{{'price'+i}}"  [disabled]="released ?true:false" type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" step=".01" [(ngModel)]="items.mrp" (change)="finalchange($event,items.availableQuantity,'')" (keyup)="updateValue($event,items.availableQuantity,'')"/></td>
+                            <td>{{items.availableQuantity}}</td>
+                            <td>{{items.reason}}</td>
+                            <td id="{{'pon'+i}}">{{((items.mrp)*(items.quantity)*(items.conversion))|number:'1.0-2'|nocommanumber}}</td>
+                            <td><a (click)="removeitem(items.purchaseOrderDetailId)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                    <div class="col-sm-10 form-group text-center"> 
+                    <button class="btn btn-raised btn-success" *ngIf="!released" (click)="submitPO()" data-toggle="tooltip" title="create po">Save</button>
+                    <button class="btn btn-raised  btn-dark " (click)="back()">Cancel</button>
+                </div> 
+                </div>
+    
+          </div>
+    
+        </div>
+    
+      </div>
+  </div>
+
+    <div *ngIf="ismodal" id="myModal" class="modal fade " style=" position: fixed;
+    top: -4;
+    right: 0;
+    bottom: 0;
+    left: -7%;
+    width: 1300px;
+   " role="dialog">
+       <div class="modal-dialog modal-lg" style=" border-radius: 10px">
+     
+         <!-- Modal content-->
+         <div class="modal-content" style="width: 1100px">
+           <div class="modal-header" style="background-color: #f3903f;border-top-right-radius:10px;border-top-left-radius: 10px">
+             <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title" style="    margin-top: -13px;
+             margin-bottom: 12px;">Add Product</h4>
+           </div>
+           <div class="modal-body" style="width: 100% ;min-height: 150px;">
+             <form (ngSubmit)="prosearchlist(name.value)">
+                   <div class="form-row">
+                     <div class="form-group col-md-6">
+                       <label for="name">Name</label>
+                       <input #name type="text" class="form-control"  id={{searchresultid}} (keyup)="auto($event)" value="{{searchresult}}">
+                       <div *ngIf="searchvalue" class="autosearch" style="background-color:whitesmoke;position:absolute;z-index: 100;">
+                       <ng-container  *ngFor="let result of filterdresult"  >
+                         <label role="button" *ngIf="searchvalue"  (click)="searchevent($event)" attr.id="{{result.id}}">{{result.name}}</label>
+                         <br/>
+                       </ng-container>
+                     </div>
+                     </div>
+                     <div class="form-group col-md-6">
+                       <button type="submit" class="btn btn-raised  btn-success" (click)="toggle3()">Search</button>
+                       <button type="reset" class="btn btn-raised btn-dark" >Reset</button>
+                     </div>
+                   </div>
+             </form>
+             <div *ngIf="show3" class="container selecteditem" style="margin-left: -18px; margin-top:100px;position:relative; height: 300px;
+             overflow-y: auto;width:55% 
+             ">
+               <h4>Searched Result</h4>
+               
+               <table class="table-bordered table"  style="width:100%;">
+                 <thead>
+                   <tr>
+                      <th><input type="checkbox" [(checked)]="abbs" name="heading" (click)="checkbox($event)"/></th>
+                       
+                     <!-- <th>#</th> -->
+                     <th>HSN</th>
+                     <th>name</th>
+                     <th>Stock Type</th>
+                     <th>Stock Qty</th>
+                     <th>Qty</th>
+                   </tr>
+                 </thead>
+                 <tbody *ngIf="nameresponse.length==0"><tr><td colspan="8" style="text-align:center">No Record Found....</td></tr></tbody>
+   
+                 <tbody *ngIf="nameresponse.length!=0">
+                   <tr *ngFor="let searchitems of nameresponse; let i=index; ">
+                     <td><input type="checkbox" [(checked)]="checkvalue" (click)="singlecheck($event,searchitems.id,'search',stype.value)"/></td>
+                     <td>{{searchitems.hsnCode}}</td>
+                     <td>{{searchitems.name}}</td>
+                     <td><select #stype (change)="changeselect($event,searchitems.id,'new')">
+                       <option value=" ">Select</option>
+                       <option *ngFor="let data of selectarray[i]" value="{{data}}">{{data}}</option>
+                     </select></td>
+                     <td id="{{'t'+searchitems.id}}">0</td>
+                     <td><input type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="searchitems.quantity" [(ngModel)]="searchitems.quantity" (keyup)="qtychange($event,searchitems.stockQ)" ></td>
+           
+                     <!-- <td><button class="btn-raised" style="background-color: #95cf22" #checkitem value="{{searchitems.id}}" (click)="singlecheck($event)">Add</button></td> -->
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+             <div *ngIf="show3">
+             <button class="btn btn-raised btn-success" style="    position: fixed;
+             left: 585px;
+             top: 250px;"  (click)="goselect($event)">>></button>
+             </div>
+   
+             <div *ngIf="showselected" class="container selecteditem" style=" position: absolute;
+             top: 128px;
+             left: 650px; height: 300px;
+             overflow-y: auto;
+             ">
+               <h4>Selected Items</h4>
+               
+               <table class="table-bordered table"  style="width:37%;">
+                 <thead>
+                   <tr>
+                     <th>Name</th>
+                     <th>Qty</th>
+                     <th>Reason</th>
+                     <th>#</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr *ngFor="let searchitems of selectedfinallist">
+                    
+                     <td>{{searchitems.name}}</td>
+                     <td><input type="number" min="1" oninput="validity.valid||(value='');" style="width:40px;" name="searchitems.quantity" [(ngModel)]="searchitems.quantity" (keyup)="qtychange($event,searchitems.stockQ)" ></td> 
+                     <td>{{searchitems.reason}}</td>
+                     <td><a (click)="removeitem2(searchitems.id)"><i class="fa fa-trash" style="color: red" aria-hidden="true"></i></a></td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+   
+           </div>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-raised btn-success"(click)="bynamelist($event)">submit</button>
+             <button type="button" class="btn btn-raised" style="background-color: #f3903f" data-dismiss="modal"(click)="closename()">Close</button>
+           </div>
+         </div>
+     
+       </div>
+    </div>

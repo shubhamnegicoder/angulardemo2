@@ -1,0 +1,156 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Planogram Template</h1>
+      <small class="text-muted breadcrumb"><a routerLink="/Machine">Machine</a> » <a routerLink="/Planogram">Planogram</a> » view</small> </div>
+   
+  </div>
+</div>
+
+<section class="boxs">
+  <div class="boxs-header">
+      <h3 class="custom-font hb-purple">
+          Planogram</h3>
+  </div>
+  <div class="boxs-body">
+      <div class="pagecontent">
+          <div id="rootwizard" class="tab-container tab-wizard">
+              <ul class="nav nav-tabs nav-justified nav-pills">
+                  <li class="active">
+                      <a href="#tab1" data-toggle="tab" aria-expanded="true" (click)="tabClicked(1)">Baisc Info
+                          <span class="badge badge-default pull-right wizard-step">1</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="#tab2" data-toggle="tab" (click)="tabClicked(2)"> Configuration
+                          <span class="badge badge-default pull-right wizard-step">2</span>
+                      </a>
+                  </li>
+                  
+              </ul>
+              <div class="tab-content">
+                  <div class="tab-pane active" id="tab1">
+                      <form name="step1" role="form">
+                         
+                          <div class="row">
+                              <div class="form-group col-md-4 is-empty">
+                                  <label for="title">Title </label>
+                                  <input type="text" disabled name="title" id="title" [(ngModel)]="dataToSend.name" class="form-control" required="">
+                              <span class="material-input"></span></div>
+                              <div class="form-group col-md-4 is-empty">
+                                  <label for="password">Type : </label>
+                                  <select disabled class="form-control"   name='type' #type required="" [(ngModel)]="dataToSend.machineTypeId">
+                                    <option value="">Select </option>
+                                    <option *ngFor="let data of machineTypeList" value="{{data.id}}">{{data.name}}</option>
+                                  </select>
+                              <span class="material-input"></span></div>
+                              <div class="form-group col-md-4 is-empty">
+                                  <label for="make">Make : </label>
+                                  <select disabled class="form-control"   name='make' #make required="" [(ngModel)]="dataToSend.machineMakeId">
+                                    <option value="">Select </option>
+                                    <option *ngFor="let data of machineMakeList" value="{{data.id}}">{{data.name}}</option>
+                                  </select>
+                              <span class="material-input"></span></div>
+
+                              <div class="form-group col-md-4 is-empty">
+                                <label for="model">Model : </label>
+                                <select disabled class="form-control"   name='machineModelId' #model required="" [(ngModel)]="dataToSend.machineModelId">
+                                  <option value="">Select</option>
+                                  <option *ngFor="let data of machineModelList" value="{{data.id}}">{{data.name}}</option>
+                                </select>
+                            <span class="material-input"></span></div>
+                            <div class="form-group col-md-4 is-empty">
+                                <label for="shelf_rows">NO. of Shelf/Rows : </label>
+                                <input disabled type="number" min=1 oninput="validity.valid||(value='');" name="rowsCount" (change)="rowValueChange($event)" id="rowsCount" class="form-control" [(ngModel)]="dataToSend.rowsCount" required="">
+                            <span class="material-input"></span></div>
+                            <div class="form-group col-md-4 is-empty">
+                                <label for="bin_row">No. of Bin/Row </label>
+                                <input disabled type="number" min=1 oninput="validity.valid||(value='');"  name="perRowBinCount" (change)="binCountChangeEvent($event)" id="perRowBinCount" class="form-control" [(ngModel)]="dataToSend.perRowBinCount" required="">
+                            <span class="material-input"></span></div>
+                          </div>
+                        
+                      </form>
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                          <div class="row">
+                             
+                              <div class="boxs-body">
+                                <div class="col-sm-5" >
+                                  <table class="table mb-0 table-responsive table-bordered" id="usersList">
+                                    <thead>
+                                      <tr class=" bg-lightgray" >
+                                        <th class="text-darkgray" >No. of Bin</th>
+                                        <th class="text-darkgray">Spiral per Bin</th>
+
+                                      </tr>
+                                    </thead>
+                                    <tbody *ngIf="rowArray.length===0">
+                                      <tr>
+                                        <td colspan="8" style="text-align:center">No Record Found....</td>
+                                      </tr>
+                                    </tbody>
+                                    <tbody>
+                                      <tr *ngFor='let col of rowArray;let i=index' style="height:50px">
+                                        <td >
+                                            <label class="customViewMode">{{this.binArrayForPlanogram[i].numOfBins}}</label>
+                                        </td>
+                                        <td>
+                                            <label class="customViewMode">{{this.binArrayForPlanogram[i].spiralPerBin}}</label>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-5" >
+                                        <table class="table mb-0 table-responsive table-bordered" id="usersList">
+                                          <thead>
+                                            <tr class=" bg-lightgray" >
+                                              <th class="text-darkgray" [attr.colSpan]='tblBinCount' style="text-align:center">Planogram</th>      
+                                            </tr>
+                                          </thead>
+                                          <tbody *ngIf="rowArray.length===0">
+                                            <tr>
+                                              <td colspan="tblBinCount" style="text-align:center">No Record Found....</td>
+                                            </tr>
+                                          </tbody>
+                                          <tbody>
+                                            <tr *ngFor='let col of rowArray;let i=index' style="height:50px">
+                                             <td style="padding-left:1%;" [attr.colSpan]='calculateColSpan(i,j)' *ngFor='let bins of calculateNumberOfBinsTobeMade(i);let j=index'>
+                                               <div class="binId">
+                                                    <label class="customLabel">{{this.binArrayForPlanogram[i].colspanArr[j].isActive===true?this.binArrayForPlanogram[i].colspanArr[j].binId:""}}</label>
+                                                </div>
+                                                <div *ngIf="this.binArrayForPlanogram[i].colspanArr[j].isActive===true">
+
+                                                    <label class="customViewMode">{{this.binArrayForPlanogram[i].colspanArr[j].binDepth}}</label>
+
+                                                     
+                                                </div>
+                                               
+                                            </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                              </div>
+                                
+                            </div>
+                   
+                  </div>
+                  
+               
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+   <!-- spinner code -->
+   <ngx-spinner
+   bdColor = "rgba(51, 51, 51, 0.8)"
+   size = "medium"
+   color = "#f3903f"
+   type = "ball-triangle-path"
+   ></ngx-spinner>
+ 

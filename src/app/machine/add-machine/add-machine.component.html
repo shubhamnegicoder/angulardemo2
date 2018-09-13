@@ -1,0 +1,414 @@
+<div class="mb-10">
+    <div class="row">
+      <div class="col-sm-6 col-xs-12">
+        <h1 class="h3 m-0">Machine</h1>
+        <small class="text-muted breadcrumb"><a routerLink="/Machine">Machine</a>  » {{breadcrumTitle}} </small> </div>
+     
+    </div>
+  </div>
+  
+  <section class="boxs">
+    <div class="boxs-header">
+        <h3 class="custom-font hb-purple">
+            {{pageHeading}}</h3>
+    </div>
+    <div class="boxs-body">
+        <div class="pagecontent">
+            <div id="rootwizard" class="tab-container tab-wizard">
+                <ul class="nav nav-tabs nav-justified nav-pills">
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab" aria-expanded="true" (click)="tabClicked(1)">Baisc Info
+                            <span class="badge badge-default pull-right wizard-step">1</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab" (click)="tabClicked(2)"> Other Components
+                            <span class="badge badge-default pull-right wizard-step">2</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab3" data-toggle="tab" (click)="tabClicked(3)"> Location
+                            <span class="badge badge-default pull-right wizard-step">3</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#tab4" data-toggle="tab" (click)="tabClicked(4)"> Planogram
+                            <span class="badge badge-default pull-right wizard-step">4</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <form name="step1" role="form">
+                           
+                            <div class="row">
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="serialNo">Serial NO. </label>
+                                    <input type="text" name="serialNo" [(ngModel)]="dataForMachineBasicDetail.serialNo" id="serialNo" class="form-control" #serialNO required="">
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="machineName">Machine Name </label>
+                                    <input type="text" name="machineName" [(ngModel)]="dataForMachineBasicDetail.name" id="machineName"  class="form-control" required="">
+                                <span class="material-input"></span></div>
+
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="operatorLocation">Operator Location  </label>
+                                    <select class="form-control" [(ngModel)]="dataForMachineBasicDetail.operationLocationId"  name='operatorLocation' #operatorLocation required="" >
+                                        <option value="0">Select </option>
+                                        <option *ngFor="let data of operatorLocationList" value="{{data.id}}">{{data.name}}</option>
+                                      </select>                                <span class="material-input"></span></div>
+
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="password">Type : </label>
+                                    <select class="form-control" [(ngModel)]="dataForMachineBasicDetail.machineTypeId" id="type" name='type' #type required="" >
+                                      <option value="0">Select </option>
+                                      <option *ngFor="let data of machineTypeList" value="{{data.id}}">{{data.name}}</option>
+                                    </select>
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="make">Make : </label>
+                                    <select class="form-control"  [(ngModel)]="dataForMachineBasicDetail.machineMakeId" id="make" name='make' #make required="" >
+                                      <option value="0">Select </option>
+                                      <option *ngFor="let data of machineMakeList" value="{{data.id}}">{{data.name}}</option>
+                                    </select>
+                                <span class="material-input"></span></div>
+  
+                                <div class="form-group col-md-4 is-empty">
+                                  <label for="model">Model : </label>
+                                  <select class="form-control"  [(ngModel)]="dataForMachineBasicDetail.machineModelId" id="model" name='machineModelId' #model required="" >
+                                    <option value="0">Select</option>
+                                    <option *ngFor="let data of machineModelList" value="{{data.id}}">{{data.name}}</option>
+                                  </select>
+                              <span class="material-input"></span></div>
+                              <div class="form-group col-md-4 is-empty">
+                                  <label for="password">Telemetry : </label>
+                                  <select class="form-control"  [(ngModel)]="dataForMachineBasicDetail.telemetryId" name='type' #telemetry required="" >
+                                    <option value="0">Select </option>
+                                    <option *ngFor="let data of telemetryList" value="{{data.id}}">{{data.name}}</option>
+                                  </select>
+                              <span class="material-input"></span></div>
+                              <div class="form-group col-md-4 is-empty">
+                                  <label for="make">Vpos : </label>
+                                  <select class="form-control"  [(ngModel)]="dataForMachineBasicDetail.vposId" name='make' #vpos required="" >
+                                    <option value="0">Select </option>
+                                    <option *ngFor="let data of vposList" value="{{data.id}}">{{data.name}}</option>
+                                  </select>
+                              <span class="material-input"></span></div>
+
+                              <div class="form-group col-md-4 is-empty">
+                                <label for="model">Cashbox : </label>
+                                <select class="form-control" [(ngModel)]="dataForMachineBasicDetail.cashBoxId"  name='machineModelId' #cashbox required="" >
+                                  <option value="0">Select</option>
+                                  <option *ngFor="let data of cashBoxList" value="{{data.id}}">{{data.name}}</option>
+                                </select>
+                            <span class="material-input"></span></div>
+                            </div>
+                          
+                        </form>
+                    
+                    </div>
+
+                    <div class="tab-pane" id="tab2">
+                        <!-- <form name="step2" role="form">
+                           
+                            <div class="row">
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="password">Type : </label>
+                                    <select class="form-control"   name='type' #type required="" >
+                                      <option value="">Select </option>
+                                      <option value="1">Temp1 </option>
+                                      <option value="2">Temp2 </option>
+                                    </select>
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="make">Serial No. : </label>
+                                    <input type="text" name="serialNo" id="serialNo" class="form-control" required="">
+                                <span class="material-input"></span></div>
+                          </div>
+                         
+                        </form> -->
+
+                        <div *ngIf="showComponentTbl">
+                                <table class="table mb-0 table-responsive table-bordered" id="usersList">
+                                  <thead>
+                                    <tr class=" bg-lightgray" >
+                                      <th class="text-darkgray"  style="text-align:center">Name</th>  
+                                      <th class="text-darkgray"  style="text-align:center">Type</th>  
+                                      <th class="text-darkgray"  style="text-align:center">Serial Number</th>  
+                                     
+                                    </tr>
+                                  </thead>
+
+                                  <tbody *ngIf="machineComponentList.length===0">
+                                        <tr>
+                                          <td colspan="3" style="text-align:center">No Record Found....</td>
+                                        </tr>
+                                    </tbody>
+                                
+                                  <tbody>
+                                    <tr *ngFor='let data of machineComponentList;let i=index' style="height:50px">
+                                       <td style="text-align:center">{{data.name}}</td>
+                                       <td style="text-align:center">{{data.componentTypeName}}</td>
+                                       <td style="text-align:center">{{data.serialNo}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+
+
+                        <div>
+                            <button class="btn btn-raised btn-info" data-toggle="modal" data-target="#addComponentModal" >Add Components</button>
+                        </div>
+
+                    
+                 
+                    </div>
+
+                <div class="tab-pane" id="tab3">
+                    <form name="step3" role="form">
+                       
+                        <div class="row">
+                            <div class="form-group col-md-4 is-empty">
+                                <label for="password">Customer : </label>
+                                <select class="form-control" (change)='customerSelected($event)'  name='type' #customr required="" >
+                                  <option value="0">Select </option>
+                                  <option *ngFor="let data of customerList" value="{{data.id}}">{{data.name}}</option>
+                                </select>
+                            <span class="material-input"></span></div>
+                            <div class="form-group col-md-4 is-empty">
+                                <label for="make">Customer Location : </label>
+                                <select class="form-control" (change)='selectedCustomerLocation($event)'  name='make' #customerLocation required="" >
+                                  <option value="0">Select </option>
+                                  <option *ngFor="let data of customerLocationList" value="{{data.id}}">{{data.name}}</option>
+                                </select>
+                            <span class="material-input"></span></div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="tab-pane" id="tab4">
+                           
+                            <div class="row">
+                                <div class="form-group col-md-4 is-empty">
+                                    <label for="password">Planogram Template : </label>
+                                    <select class="form-control" (change)='planogramSelected($event)' [(ngModel)]="this.dataForMachineBasicDetail.planogramTemplateId"  name='type' #templateId required="" >
+                                      <option value="0">Select </option>
+                                      <option *ngFor="let data of planogramTemplateList" value="{{data.id}}">{{data.name}}</option>
+                                    </select>
+                                <span class="material-input"></span></div>
+                            </div>
+
+                            <div *ngIf="showPlanogram">
+                                <table class="table mb-0 table-responsive table-bordered" id="usersList">
+                                  <thead>
+                                    <tr class=" bg-lightgray" >
+                                      <th class="text-darkgray" [attr.colSpan]='tblBinCount' style="text-align:center">Planogram</th>      
+                                    </tr>
+                                  </thead>
+                                
+                                  <tbody>
+                                    <tr *ngFor='let col of rowArray;let i=index' style="height:50px">
+                                     <td style="padding-left:1%;" [attr.colSpan]='calculateColSpan(i,j)' *ngFor='let bins of calculateNumberOfBinsTobeMade(i);let j=index'>
+                                       <div class="binId">
+                                            <label class="customLabel">{{this.binArrayForPlanogram[i].colspanArr[j].isActive===true?this.binArrayForPlanogram[i].colspanArr[j].binId:""}}</label>
+                                        </div>
+                                        <div *ngIf="this.binArrayForPlanogram[i].colspanArr[j].isActive===true">
+                                                <!-- <label class="customViewMode">{{this.binArrayForPlanogram[i].colspanArr[j].binDepth}}</label> -->
+                                                <div *ngIf="isShowProdDiv(i,j)" class="text-center">
+                                                    <label >{{findoutProductNameToShow(i,j,'name')}}</label><br><br>
+                                                    <img src="assets/images/barcode.png"><br>
+                                                    <label>INR (₹​) :</label><label>{{findoutProductNameToShow(i,j,'price')}}</label><br>
+                                                    <label>Product Count:</label>&nbsp;<label>{{findoutProductNameToShow(i,j,'qty')}}</label><label>/</label>
+                                                    <label>{{this.binArrayForPlanogram[i].colspanArr[j].binDepth}}</label>
+
+                                                  </div>  
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn btn-raised btn-info" *ngIf="!isShowProdDiv(i,j)" data-toggle="modal" data-target="#addProductModal" (click)="addProductCalled(i,j)">Add Product</button>
+                                       </div>
+                                    </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              
+                           
+                </div>
+
+                
+                <ul class="pager wizard" style="margin-top:2%">
+                        <li class="previous">
+                            <a class="btn btn-raised btn-default" id='previouss' (click)='previousBtnClicked(3)'>Previous</a>
+                        </li>
+                       
+                        <li class="next">
+                                <a class="btn btn-raised btn-info" id='next' >Save</a>
+                            <!-- <button class="btn btn-raised btn-info" (click)='previousBtnClicked(1)'>Next</button> -->
+                        </li>
+                    </ul>
+                    
+                   
+  
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  
+
+
+     <!-- Modal-->
+     <div class="modal fade" id="addComponentModal" role="dialog" data-dismiss="modal" #closeBtn>
+            <div class="modal-dialog">
+    
+                <!-- Modal content-->
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add Component</h4>
+                        </div>
+                        <div><br></div>
+                        <div class="modal-body" style="padding:0px 24px 100px 24px">
+                            <div class="form-group col-sm-4">
+                                  <label>Component Name:</label>
+                                                    <input type="text"  class="form-control" name="name"  placeholder="Enter Name" #componentName>
+                              </div>
+                                <div class="form-group col-sm-4">
+            
+                                    <label>Type:</label>
+                                    <select class="form-control"    name="componentType" #componentType >
+                                      <option value="0">Select </option>
+                                      <option *ngFor="let data of machineComponentTypeList_DD" value="{{data.id}}"  >{{data.name}}</option>
+                                    </select>
+                                  </div>
+
+                                  <div class="form-group col-sm-4">
+                                        <label>Serial Number:</label>
+                                            <input type="text"  class="form-control" name="name"   placeholder="Enter Serial Number" #componentSerialNo>
+                                    </div>
+                         </div>
+                        <div class="modal-footer">
+                        
+                       
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn btn-success btn-raised"  (click)="addMachineComponents(componentName.value,componentType.value,componentSerialNo.value)">Submit</button>
+                                                    <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal">Cancel</button>
+                                               
+                                            </div>
+                        </div>
+                    </div>
+            </div>
+          </div>
+
+         
+   <!-- Modal for adding products to bin-->
+          <div class="modal fade" id="addProductModal" role="dialog" data-dismiss="modal" #closeBtn1>
+                <div class="modal-dialog">
+        
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Product</h4>
+                            </div>
+                            <div><br></div>
+                            <!-- <div class="modal-body" style="padding:0px 24px 100px 24px">
+                                <div class="form-group col-sm-4">
+                                      <label>Component Name:</label>
+                                                        <input type="text"  class="form-control" name="name"  placeholder="Enter Name" #componentName>
+                                  </div>
+                                    <div class="form-group col-sm-4">
+                
+                                        <label>Type:</label>
+                                        <select class="form-control"    name="componentType" #componentType >
+                                          <option value="0">Select </option>
+                                          <option *ngFor="let data of machineComponentTypeList_DD" value="{{data.id}}"  >{{data.name}}</option>
+                                        </select>
+                                      </div>
+    
+                                      <div class="form-group col-sm-4">
+                                            <label>Serial Number:</label>
+                                                <input type="text"  class="form-control" name="name"   placeholder="Enter Serial Number" #componentSerialNo>
+                                        </div>
+                             </div> -->
+                          
+                          
+                             <div class="modal-body" >
+                                    <form>
+                                          <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                              <label for="name">Name</label>
+                                              <input #name type="text" class="form-control"  id={{searchresultid}} (keyup)="auto($event)" value="{{searchresult}}">
+                                              <div *ngIf="searched" class="autosearch" style="background-color:whitesmoke;position:absolute;z-index: 100;">
+                                              <ng-container  *ngFor="let result of searchDataList"  >
+                                                <label role="button" *ngIf="searched"  (click)="selectFilteredList($event)" attr.id="{{result.id}}">{{result.name}}</label>
+                                                <br/>
+                                              </ng-container>
+                                            </div> 
+                                            </div>
+                                            <div class="form-group col-md-6" style="margin-top: 4%">
+                                              <button type="submit" class="btn btn-raised  btn-success" (click)="searchBtnClicked(name.value)">Search</button>
+                                              <button type="reset" class="btn btn-raised btn-dark" (click)="addProductResetClicked()">Reset</button>
+                                            </div>
+                                          </div>
+                                    </form>
+                                    <div *ngIf="showSelectedProductInfo" class="container selecteditem" style="margin-top:100px;position:relative; height: 300px;
+                                    overflow-y: auto;width:100%">
+                                   
+                                      <h4>Selected Item</h4>
+                                      
+                                      <table class="table-bordered table">
+                                        <thead>
+                                          <tr>
+                                           <th>Select</th>
+                                            <th>Name</th>
+                                            <th>Mrp</th>
+                                            <th>MaxQty</th>
+                                            <th>Qty</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody *ngIf="searchDataList.length==0"><tr><td colspan="3" style="text-align:center">No Record Found....</td></tr></tbody>
+                        
+                                        <tbody *ngIf="searchDataList.length!=0">
+                                          <tr *ngFor="let searchitems of searchDataList;let i=index;">
+                                                <td>
+                                                        <input type="checkbox" style="margin-left:5%" (click)="checkBoxClicked($event,searchitems.id,i)" [(checked)]="searchitems.isSelected">
+                                                      </td>
+                                            <td>{{searchitems.name}}</td>
+                                            <td>{{searchitems.price}}</td>
+                                            <td>{{maxProductQty}}</td>
+                                            <td><input type="number" oninput="validity.valid||(value='');" min="1" max="{{maxProductQty}}" style="width:40px;" name="searchitems.quantity" [(ngModel)]="searchitems.enteredQty" ></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                 
+                                  
+                        
+                                  </div>
+                          
+                          
+                                      <div class="modal-footer">
+                            
+                           
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-success btn-raised"  (click)="saveProductInfoToBin()">Submit</button>
+                                                        <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal" (click)="cancelClicked()">Cancel</button>
+                                                   
+                                                </div>
+                            </div>
+                        </div>
+                </div>
+              </div>
+  
+     <!-- spinner code -->
+     <ngx-spinner
+     bdColor = "rgba(51, 51, 51, 0.8)"
+     size = "medium"
+     color = "#f3903f"
+     type = "ball-triangle-path"
+     ></ngx-spinner>
+   
+  

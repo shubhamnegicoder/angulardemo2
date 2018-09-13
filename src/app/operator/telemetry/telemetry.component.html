@@ -1,0 +1,169 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">Telemetry</h1>
+      <small class="text-muted breadcrumb">Telemetry</small> </div>
+    <div class="col-sm-6 col-xs-12 text-right">
+      <button class="btn btn-raised btn-info pull-right filter_trigger" (click)="toggleShow();">Filter
+      <div class="ripple-container"></div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="boxs">
+  <div class="row"> 
+    <!-- /Filter Panel-->
+    <div class="boxs-widget filter_block"  *ngIf="show">
+
+      <div class="col-sm-3">
+         <div class="form-group is-empty">Operation Location : 
+          <select class='form-control' [(ngModel)]="data.operationLocationId" name="operationLocationId">
+            <option>Select Option</option>
+            <option *ngFor='let ddl of ddlOperationLocation' value="{{ddl.id}}">
+               {{ddl.name}}
+            </option>
+        </select><span class="material-input"></span>
+        </div>
+                  
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group is-empty">Name<input type="text" name="name" #name=ngModel [(ngModel)]="data.name" class="form-control" placeholder="Name"><span class="material-input"></span></div>
+      </div>
+      <div class="col-sm-3">
+          <div class="form-group is-empty">Serial No<input type="text" name="serialNo" #name=ngModel [(ngModel)]="data.serialNo" class="form-control" placeholder="serial No"><span class="material-input"></span></div>
+        </div>
+      <div class="clearfix"></div>
+      <div class="form-group">
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-raised btn-danger" (click)="filterList();" >Search
+          <div class="ripple-container"></div>
+          </button>
+          <button type="button" class="btn btn-raised btn-default" (click)="clearData();" >Reset</button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <hr>
+    </div>
+    <!--End/.-->
+    <div class="col-md-12">
+      <div class="boxs-widget">
+        <div class="row">
+          <div class="col-md-6"> <a class="btn btn-success btn-raised" data-target="#telemetryModal" data-toggle="modal" >Add New</a>  </div>
+          <div class="col-md-6 text-right pagestatus">
+            <small class="text-muted">
+              Per page
+              <select (change)="optionpage($event)">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              showing <strong class="text-darkgray">{{(pageNo*pageSize)-(pageSize-1)}}</strong> to <strong class="text-darkgray">{{pageNo*pageSize>=totalRecords?totalRecords:pageNo*pageSize}}</strong> of <strong class="text-darkgray">{{totalRecords}}</strong>
+            </small>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="boxs-body">
+        <div class="table-responsive">
+          <table class="table mb-0 table-striped" id="telemetryList">
+            <thead>
+              <tr class=" bg-lightgray">
+                <th class="text-darkgray">Name</th>
+                <th class="text-darkgray">Serial#</th>
+                <th class="text-darkgray">Operation Location</th>
+                <th class="text-darkgray" style="width:10%;text-align:center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let telemetry of telemetryList">
+                  <td>{{telemetry.name}}</td>
+                  <td>{{telemetry.serialNo}}</td>
+                  <td>{{telemetry.operationLocationName}}</td>
+                  <td style='width:9%'><a title="Click here to Edit" class="p-5 text-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                
+              </tr>
+           
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /boxs body --> 
+      
+      <!-- boxs footer -->
+      <div class="boxs-footer dvd dvd-top">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination">
+ 
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(pager.currentPage - 1)"> <i class="fa fa-chevron-left"></i></a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li>
+                <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages" style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)"> <i class="fa fa-chevron-right"></i></button>
+              </li>
+
+            </ul>
+          </div>
+          </div>
+        </div>
+      <!-- /boxs footer --> 
+    </div>
+  </div>
+</div>
+ <!-- Add/Edit Telemetry popup -->
+<div class="modal fade" id="telemetryModal" role="dialog" data-dismiss="modal" #closeBtn>
+  <div class="modal-dialog">
+  
+  <!-- Modal content-->
+  <div class="modal-content">
+  <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" (click)="closeModal();telemetryForm.reset()">&times;</button>
+  <h4 class="modal-title">Add Telemetry</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <form #telemetryForm="ngForm">
+          <div>
+            <label>Name:</label>
+            <input required type="text" id="name" name="name" class="form-control"
+            [(ngModel)]="data.name" #nameField="ngModel"  placeholder="name">
+            <span *ngIf="nameField.errors?.required && nameField.touched" style="color:red">
+              Name is required
+            </span>
+          </div>
+          <div>
+            <label>Serial No:</label>
+            <input required type="text" class="form-control" id="serialNo"  name="serialNo"  [(ngModel)]="data.serialNo"
+             #serialNoField="ngModel" placeholder="Serial No">
+             <span *ngIf="serialNoField.errors?.required && serialNoField.touched" style="color:red">
+                Serial No  is required
+              </span>
+          </div>
+          <div>
+            <label>Operation Location:</label>
+            <select required class='form-control' id="operationLocationId" name="operationLocationId" [(ngModel)]="data.operationLocationId" 
+              #operationLocationIdField="ngModel">
+             <span *ngIf="operationLocationIdField.errors?.required && operationLocationIdField.touched" style="color:red">
+                Operation location is required
+              </span>
+              <option>Select Option</option>
+              <option *ngFor='let ddl of ddlOperationLocation' value="{{ddl.id}}">
+                 {{ddl.name}}
+              </option>
+            </select></div>
+        </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <div class="col-md-12">
+      <button type="button" class="btn btn-success btn-raised" [disabled]="telemetryForm.invalid" (click)="saveTelemetry();">Save</button>
+      <button type="reset" class="btn btn-raised btn-warning" data-dismiss="modal" (click)="closeModal();telemetryForm.reset()" >Cancel</button>
+      </div>
+      </div>
+  </div>
+  </div>
+  </div>
+<router-outlet></router-outlet>

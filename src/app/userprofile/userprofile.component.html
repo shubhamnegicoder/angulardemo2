@@ -1,0 +1,139 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">User Profile</h1>
+      <small class="text-muted breadcrumb"><a href="#">User Profile</a></small>
+    </div>
+  </div>
+</div>
+
+<!-- row -->
+
+
+ 
+   
+     
+        <div class="profile-page">
+          <!-- page content -->
+          <div class="pagecontent">
+            <!-- row -->
+            <div class="row">
+              
+              <div class="col-md-9 col-sm-9">
+                <section class="boxs boxs-simple">
+                  <div class="boxs-body p-0">
+                    <div role="tabpanel">
+                      <ul class="nav nav-tabs tabs-dark-t" role="tablist">
+                         
+                        <li role="presentation" class="active">
+                          <a href="#basicInfo" role="tab" data-toggle="tab" aria-expanded="false">Basic Info<div class="ripple-container"></div></a>
+                        </li>
+                        <li role="presentation" class="">
+                          <a href="#setting" role="tab" data-toggle="tab" aria-expanded="true">Setting<div class="ripple-container"></div></a>
+                        </li>
+                        
+                      </ul>
+                      <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="basicInfo">
+                          <div class="wrap-reset">
+                              <div class="row">
+                                  <div class="form-group col-md-12 legend">
+                                    <h4>
+                                      <strong>Basic</strong> Information</h4>
+                                      <p></p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                   <div class="col-md-6 col-sm-6">
+                                     <label><b>User Id</b></label> 
+                                     <input type="text" class="form-control" value="{{user.id}}"/>
+                                   </div>
+                                   <div class="col-md-6 col-sm-6">
+                                    <label><b>Name</b></label> 
+                                    <input type="text" class="form-control" value="{{user.name}}"/>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-6">
+                                    <label><b>Company</b></label> 
+                                    <input type="text" class="form-control" value="{{user.operatorName}}"/>
+                                  </div>
+                                  <div class="col-md-6 col-sm-6">
+                                   <label><b>Manager Id</b></label> 
+                                   <input type="text" class="form-control" value="{{user.managerId}}"/>
+                                 </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-6">
+                                    <label><b>Role</b></label> 
+                                    <input type="text" class="form-control" value="{{user.userRoles}}"/>
+                                  </div>
+                                </div>
+                          </div>
+                        </div>
+                       
+                        <div role="tabpanel" class="tab-pane" id="setting">
+                          <div class="wrap-reset">
+                            <form class="profile-settings">
+                              <div class="row">
+                                <div class="form-group col-md-12 legend">
+                                  <h4>
+                                    <strong>Security</strong> Settings</h4>
+                                  <p>Secure your account</p>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="form-group col-sm-6">
+                                  <label for="username">Username</label>
+                                  <input type="text" class="form-control" id="username" value="{{user.email}}" readonly="">
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-sm-6">
+                                  <label for="password">Current Password</label>
+                                  <input type="password" class="form-control" id="password" value="secretpassword" readonly="">
+                                <span class="material-input"></span></div>
+                              </div>
+                              <div class="row">
+                                <div class="form-group col-sm-6 is-empty">
+                                  <label for="new-password">New Password</label>
+                                  <input type="password" class="form-control"  [(ngModel)]="passwordControl.password" #password="ngModel" name="password" required>
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-sm-6 is-empty">
+                                  <label for="new-password-repeat">New Password Repeat</label>
+                                  <input type="password" class="form-control" [(ngModel)]="passwordControl.confirmPassword" #confirmPassword name="confirmPassword">
+                                <span class="material-input"></span></div>
+                                <div class="form-group col-sm-12">
+                                  <button class="btn btn-raised btn-primary" (click)="changePassword()">Save Changes</button>
+                                </div>
+                              </div>
+                            
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /boxs body -->
+                </section>
+              </div>
+              <div class="col-md-3 col-sm-3 text-center">
+               
+                  <div class="card">
+                    <div style="padding: 5%">
+                      <img width="150px" height="150px" style="border-radius: 50%" src="../../assets/images/avatar2.png" alt="Card image cap">
+                     </div> <div class="card-body">
+                        <a routerLink="">change Photo</a> &nbsp;<a routerLink="">Remove Photo</a>
+                      </div>
+                    </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <!-- /boxs body -->
+
+    
+
+ 
+
+
+  

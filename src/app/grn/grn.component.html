@@ -1,0 +1,190 @@
+<div class="mb-10">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h1 class="h3 m-0">GRN</h1>
+      <small class="text-muted breadcrumb">
+        <a routerLink="/Warehouse">Warehouse</a> »
+        <a routerLink="/Grn">GRN</a>
+      </small>
+    </div>
+
+    <div class="col-sm-6 col-xs-12 text-right">
+      <button class="btn btn-raised btn-info pull-right " (click)="filterTrigger()" data-toggle="tooltip" title="Click here to filter">
+        Filter
+        <div class="ripple-container"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="boxs">
+  <div class="row">
+        <div *ngIf="trigger">
+            <div class="boxs-widget filter_block">
+              <form id="filterForm">
+                <div class="col-sm-3">
+                  <label>State:</label>
+                  <select class="form-control" (change)="selectState($event)" #state='ngModel' [(ngModel)]='filterData.state' name='state'>
+                    <option value="">Select </option>
+                    <option *ngFor="let data of stateList" value="{{data.id}}">{{data.name}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <label>City:</label>
+                  <select class="form-control" (change)="selectCity($event)" #city='ngModel' [(ngModel)]='filterData.city' name="city">
+                    <option value="">Select </option>
+                    <option *ngFor="let data of cityList" value="{{data.id}}">{{data.name}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <label>Vendor:</label>
+                  <select class="form-control" #vendor='ngModel' name="vendor"  [(ngModel)]='filterData.vendor'>
+                    <option value="">Select </option>
+                    <option *ngFor="let data of vendorList" value="{{data.id}}">{{data.name}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <label>Warehouse:</label>
+                  <select class="form-control" #warehouse='ngModel'  [(ngModel)]='filterData.warehouse' name="warehouse">
+                    <option value="">Select </option>
+                    <option *ngFor="let data of warehouseList" value="{{data.id}}">{{data.name}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <label>Status:</label>
+                  <select class="form-control" #status='ngModel'  [(ngModel)]='filterData.status' name="status">
+                    <option value="">Select </option>
+                    <option value="1">Open</option>
+                    <!-- <option value="2">Released</option> -->
+                    <option value="3">Closed</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <label>Invoice No:</label>
+                  <input type="text" class="form-control" placeholder="Invoice Number" #invoiceNo='ngModel'  [(ngModel)]='filterData.invoiceNo' name="invoiceNo">
+                </div>
+                <div class="col-sm-3">
+                  <label>GRN Code:</label>
+                  <input type="text" class="form-control" placeholder="GRN Code" #grnCode='ngModel'  [(ngModel)]='filterData.grnCode' name="grnCode">
+                </div>
+                <div class="col-sm-3">
+                  <label>Date:</label>
+                  <input type="date" class="form-control" placeholder="Date" #date1="ngModel"  [(ngModel)]='filterData.date1' name="date1">
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                  <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-raised btn-danger" (click)="searchDetails(state.value,city.value,vendor.value,warehouse.value,status.value,invoiceNo.value,grnCode.value,date1.value)"
+                      data-toggle="tooltip" title="Click here to search">
+                      Search
+                      <div class="ripple-container"></div> 
+                    </button>
+                    <button  class="btn btn-raised btn-default" data-toggle="tooltip" title="Click here to reset" (click)="resetfunction()" >Reset</button>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <hr />
+              </form>
+            </div>
+          </div>
+          <!--End/.-->
+          <div class="col-md-12"> 
+            <div class="boxs-widget">
+              <div class="row">
+                <div class="col-md-6">
+                  <a class="btn btn-success btn-raised text-warning" routerLink="Create" data-toggle="tooltip" title="Click here to add new grn">Add New</a>
+                </div>
+                <div class="col-md-6 text-right pagestatus">
+                  <small class="text-muted">
+                    Per page
+                    <select (change)="optionpage($event)">
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select>
+                    showing
+                    <strong class="text-darkgray">{{(pageNo*pageSize)-(pageSize-1)}}</strong> to
+                    <strong class="text-darkgray">{{pageNo*pageSize
+                      <totalRecords?pageNo*pageSize:totalRecords}}</strong> of
+                        <strong class="text-darkgray">{{totalRecords}}</strong>
+                  </small>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div class="boxs-body">
+              <div class="table-responsive">
+                <table class="table mb-0 table-striped" id="usersList">
+                  <thead>
+                    <tr class=" bg-lightgray">
+                      <th class="text-darkgray">GRN Code</th>
+                      <th class="text-darkgray">GRN Date</th>
+                      <th class="text-darkgray">Vendor</th>
+                      <th class="text-darkgray">Warehouse</th>
+                      <th class="text-darkgray">Status</th>
+                      <th class="text-darkgray" style="text-align: center;width:11%">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="grnList.length==0">
+                    <tr>
+                      <td colspan="8" style="text-align:center">No Record Found....</td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr *ngFor=' let data of grnList;let i=index'>
+                      <td>{{data.code}}</td>
+                      <td>{{data.date | date: 'dd MMM, yyyy'}}</td>
+                      <td>{{data.vendorName}}</td>
+                      <td>{{data.warehouseName}}</td>
+                      <td *ngIf="data.status==1">Open</td>
+                      <td *ngIf="data.status==3">Closed</td>
+                      <td style="text-align: right;width:14%">
+                        <a class="p-5 text-blue" [routerLink]="['Update',data.gdnId]" [ngClass]="{disabled:data.status>1}" >
+                          <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" title="Click here to edit" style="font-size:20px" ></i>
+                        </a>
+                        <a class="p-5 text-blue" [routerLink]="['View',data.gdnId]">
+                          <i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" title="Click here to view" style="font-size:20px;margin-left:4%;margin-right:3%"></i>
+                        </a>
+                        <a class="p-5 text-blush" role="button" (click)="printGrnPdf(data.gdnId)"  [ngClass]="{disabled:data.status==1}">
+                          <i class="fa fa-print" aria-hidden="true" data-toggle="tooltip" title="Click here to print" style="font-size:20px;margin-right:-2%" ></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /boxs body -->
+            <!-- boxs footer -->
+            <div class="boxs-footer dvd dvd-top">
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <ul role="button" *ngIf="pager.pages && pager.pages.length" class="pagination" style="cursor:pointer">
+                    <!--<li [ngClass]="{disabled:pager.currentPage === 1}">
+                                <a (click)="setPage(1)">First</a>
+                              </li>-->
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                      <a (click)="setPage(pager.currentPage - 1)" data-toggle="tooltip" title="Previous" role="button">
+                        <i class="fa fa-chevron-left"></i>
+                      </a>
+                    </li>
+                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                      <a style="cursor:pointer" (click)="setPage(page)">{{page}}</a>
+                    </li>
+                    <li>
+                      <button class="button" [ngClass]="{'disabled':pager.currentPage === pager.totalPages}" [disabled]="pager.currentPage === pager.totalPages"
+                        style="min-height: 5px !important" (click)="setPage(pager.currentPage + 1)" data-toggle="tooltip" title="Next">
+                        <i class="fa fa-chevron-right"></i>
+                      </button>
+                    </li>
+      
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- /boxs footer -->
+          </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#f3903f" type="ball-triangle-path"></ngx-spinner>
